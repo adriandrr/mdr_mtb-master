@@ -1,5 +1,5 @@
 #from snakemake.utils import min_version
-
+#
 #min_version("6.3.0")
 
 configfile: "config/config.yaml"
@@ -13,4 +13,4 @@ rule all:
 
 include: "rules/common.smk"
 include: "rules/qc.smk"
-#include: "rules/trimm.smk"
+include: "rules/trimm.smk"

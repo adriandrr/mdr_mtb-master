@@ -15,7 +15,6 @@ rule fastqc:
     wrapper:
         "v0.86.0/bio/fastqc"
 
-
 # TODO: Change multiqc rules back to MultiQC wrapper once v1.11 is released
 from os import path
 

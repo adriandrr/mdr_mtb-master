@@ -10,5 +10,12 @@ def get_samples():
     return list(pep.sample_table["sample_name"].values)
 
 def get_fastqs(wildcards):
-    print("getfastqs",pep.sample_table.loc[wildcards.sample][["fq1", "fq2"]])
+    r=pep.sample_table.loc[wildcards.sample]["fq1"],pep.sample_table.loc[wildcards.sample]["fq2"],
+    print("r1",r[0])
+    print("r2",r[1])
+    print("data/{sample}_R1_001.fastq.gz")
     return pep.sample_table.loc[wildcards.sample][["fq1", "fq2"]]
+
+def sep_fastqs(wildcards):  
+    print(pep.sample_table.loc[wildcards.sample]["fq1","fq2"])
+    return pep.sample_table.loc[wildcards.sample]["fq1","fq2"]

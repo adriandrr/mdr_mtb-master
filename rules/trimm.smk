@@ -1,7 +1,7 @@
 rule trimmomatic:
     input:
-        r1="data/{sample}["fq1"]",
-        r2="data/{sample}["fq2"]",
+        r1="data/{sample}_R1_001.fastq.gz",
+        r2="data/{sample}_R2_001.fastq.gz"
     output:
         r1="trimmed/{sample}.1.fastq.gz",
         r2="trimmed/{sample}.2.fastq.gz",
@@ -15,7 +15,7 @@ rule trimmomatic:
         trimmer=["TRAILING:3"],
         # optional parameters
         extra="",
-        compression_level="-9"
+        #compression_level="-9"
     threads:
         32
     # optional specification of memory usage of the JVM that snakemake will respect with global
