@@ -6,7 +6,9 @@
 configfile: "config/config.yaml"
 
 def get_samples():
+    print("get_samples:",list(pep.sample_table["sample_name"].values))
     return list(pep.sample_table["sample_name"].values)
 
 def get_fastqs(wildcards):
+    print("getfastqs",pep.sample_table.loc[wildcards.sample][["fq1", "fq2"]])
     return pep.sample_table.loc[wildcards.sample][["fq1", "fq2"]]

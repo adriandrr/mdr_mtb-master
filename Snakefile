@@ -13,3 +13,4 @@ rule all:
 
 include: "rules/common.smk"
 include: "rules/qc.smk"
+#include: "rules/trimm.smk"
