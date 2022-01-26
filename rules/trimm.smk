@@ -1,10 +1,9 @@
 rule trimmomatic:
     input:
-        r1="data/{sample}_R1_001.fastq.gz",
-        r2="data/{sample}_R2_001.fastq.gz"
+        get_fastqs,
     output:
-        r1="trimmed/{sample}.1.fastq.gz",
-        r2="trimmed/{sample}.2.fastq.gz",
+        r1="trimmed/{sample}.1.fastq.gz",sample=get_samples()),
+        r2="trimmed/{sample}.2.fastq.gz",sample=get_samples()),
         # reads where trimming entirely removed the mate
         r1_unpaired="trimmed/{sample}.1.unpaired.fastq.gz",
         r2_unpaired="trimmed/{sample}.2.unpaired.fastq.gz"
