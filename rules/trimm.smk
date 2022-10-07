@@ -6,7 +6,7 @@ rule cutadapt:
     output:
         fastq1="results/trimmed/{sample}_R1.fastq",
         fastq2="results/trimmed/{sample}_R2.fastq",
-        qc="results/qc/trimmed/{sample}.qc.txt",
+        qc="results/qc/trimmed/cutadapt/{sample}.qc.txt",
     params:
         # https://cutadapt.readthedocs.io/en/stable/guide.html#adapter-types
         adapters=get_adapters,

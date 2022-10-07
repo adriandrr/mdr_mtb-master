@@ -7,7 +7,7 @@ pepfile: config["pepfile"]
 
 include: "rules/common.smk"
 include: "rules/qc.smk"
-#include: "rules/test.smk"
+include: "rules/test.smk"
 include: "rules/trimm.smk"
 
 #expand("results/trimmed/{sample}_R1_001.fastq.gz","results/trimmed/{sample}_R2_001.fastq.gz" , sample = get_samples())

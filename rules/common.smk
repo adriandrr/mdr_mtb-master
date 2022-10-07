@@ -2,8 +2,11 @@ from snakemake.utils import validate
 import pandas as pd
 from datetime import datetime
 from os import path, getcwd, listdir
+import csv
 
 configfile: "config/config.yaml"
+orgdf = pd.read_csv("resources/validorgs.csv")
+
 
 def get_samples():
     return list(pep.sample_table["sample_name"].values)
@@ -21,12 +24,16 @@ def is_amplicon_data(sample):
     except KeyError:
         return False
 
-def get_recal_input(wildcards):
-    if is_amplicon_data(wildcards.sample):
-        # do not mark duplicates
-        return "results/mapped/{sample}.bam"
-    # use BAM with marked duplicates
-    return "results/dedup/{sample}.bam"
+def get_adapters(wildcards):
+    return "-a CTGTCTCTTATACACATCT -g AGATGTGTATAAGAGACAG"
+
+def is_valid_organism():
+    for org in pep.sample_table["organism"].values:
+        if org in list(orgdf["alias"]):
+            print("{} found".format(org))
+        else:
+            print("Organism not found, see list {}".format(list(orgdf["alias"])))
+    return()
 
 def get_depth_input(wildcards):
     if is_amplicon_data(wildcards.sample):
@@ -37,9 +44,6 @@ def get_depth_input(wildcards):
     return "results/{{date}}/mapped/ref~{ref}/{{sample}}.bam".format(
         ref=amplicon_reference
     )
-
-def get_adapters(wildcards):
-    return "-a CTGTCTCTTATACACATCT -g AGATGTGTATAAGAGACAG"
 
 def get_bwa_index(wildcards):
     if wildcards.reference == "human" or wildcards.reference == "main+human":
