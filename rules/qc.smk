@@ -65,7 +65,7 @@ rule samtools_flagstat:
     wrapper:
         "0.70.0/bio/samtools/flagstat"
 
-
+"""
 rule samtools_depth:
     input:
         get_depth_input,
@@ -81,7 +81,7 @@ rule samtools_depth:
         "(samtools depth -aH -o {output} {input} && "
         " sed -i 's/{params.ref}.3/{wildcards.sample}/' {output})"
         " 2> {log}"
-
+"""
 
 # analysis of species diversity present BEFORE removing human contamination
 rule species_diversity_before:

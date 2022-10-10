@@ -18,7 +18,7 @@ def write_4_lines(file, header, seq, plus, quality):
     file.write(quality)
 
 def deduplicate_r1(fastq_r1, duplicates_path, dedupfastq1_path):
-    print("starting deduplication of R1")
+    #print("starting deduplication of R1")
     ffile = open(fastq_r1, "r")
     duplicates_file = open(duplicates_path, "w")
     newfastq = open(dedupfastq1_path, "w")
