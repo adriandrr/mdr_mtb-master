@@ -1,5 +1,3 @@
-# kljlk
-
 rule cutadapt:
     input:
         sample=get_fastqs,
@@ -9,7 +7,7 @@ rule cutadapt:
         qc="results/qc/trimmed/cutadapt/{sample}.qc.txt",
     params:
         # https://cutadapt.readthedocs.io/en/stable/guide.html#adapter-types
-        adapters=get_adapters,
+        adapters=config["illumina_adapters"],
         # https://cutadapt.readthedocs.io/en/stable/guide.html#
         extra="--minimum-length 1 -q 15",
         # Extra options, here a sequence with a lenght smaller than 0 and a quality less than Q15 is discarded
