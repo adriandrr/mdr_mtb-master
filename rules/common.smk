@@ -27,6 +27,15 @@ def is_amplicon_data(sample):
 def get_adapters(wildcards):
     return "-a CTGTCTCTTATACACATCT -g AGATGTGTATAAGAGACAG"
 
+def get_gene_loci():
+    gene_loci_list = []
+    for file in os.listdir("/homes/adrian/mdr_mtb-master/resources/pointfinder_db/mycobacterium_tuberculosis"):
+        if file.endswith(".fsa"):
+            gene_loci_list.append(os.path.splitext(file)[0])
+    print(gene_loci_list)
+    print(get_samples())
+    return gene_loci_list
+
 #def is_valid_organism():
 #    for org in pep.sample_table["organism"].values:
 #        if org in list(orgdf["alias"]):

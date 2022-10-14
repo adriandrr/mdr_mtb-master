@@ -1,48 +1,77 @@
-rule test:
-    input:
-        is_valid_organism(),
+rule get_genes:
+    output:
+        "resources/genes/mycobacterium_tuberculosis/{genelist}/{genelist}.fsa"
+    shell:    
+        "cp resources/pointfinder_db/mycobacterium_tuberculosis/{wildcards.genelist}.fsa "
+        " resources/genes/mycobacterium_tuberculosis/{wildcards.genelist}"
 
+rule index_gene_loci:
+    input:
+        "resources/genes/mycobacterium_tuberculosis/{genelist}/{genelist}.fsa",
+    output:
+        idx=multiext(
+            "resources/genes/mycobacterium_tuberculosis/{genelist}/{genelist}.fasta",
+            ".amb",
+            ".ann",
+            ".bwt",
+            ".pac",
+            ".sa",  
+        ),
+    params:
+        prefix=lambda w, output: get_bwa_index_prefix(output),
+    log:
+        "logs/bwa-index/genes/{genelist}.log",
+    wrapper:
+        "v1.14.1/bio/bwa/index"
+
+rule map_reads:
+    input:
+        reads=["results/trimmed/{sample}_R1.fastq", "results/trimmed/{sample}_R2.fastq"],
+        idx=multiext(
+            "resources/genes/mycobacterium_tuberculosis/{genelist}/{genelist}.fasta",
+            ".amb",
+            ".ann",
+            ".bwt",
+            ".pac",
+            ".sa",
+        )
+    output:
+        "results/mapped/{genelist}/{sample}.bam"
+    #log:
+    #    "logs/bwa_mem/{genelist}/{sample}"
+    params:
+        index=lambda w, input: get_bwa_index_prefix(input.idx),
+        extra="",
+        sort="samtools",
+        sort_order="coordinate",
+    threads: 8
+    wrapper:
+        "v1.14.1/bio/bwa/mem"
 
 """
-def get_depth_input(wildcards):
-    if is_amplicon_data(wildcards.sample):
-        # use clipped reads
-        return "results/{date}/clipped-reads/{sample}.primerclipped.bam"
-    # use trimmed reads
-    amplicon_reference = config["adapters"]["amplicon-reference"]
-    return "results/{{date}}/mapped/ref~{ref}/{{sample}}.bam".format(
-        ref=amplicon_reference
-    )
+rule samtools_sort:
+    input:
+        "results/mapped/{genelist}/{sample}.bam"
+    output:
+        "results/mapped/sorted/{genelist}/{sample}.sorted.bam"
+    #log:
+    #    "logs/samtools/sorted/{genelist}/{sample}.log",
+    params:
+        extra="-m 4G",
+    threads: 8
+    wrapper:
+        "v1.14.1/bio/samtools/sort"
 
-def get_bwa_index(wildcards):
-    if wildcards.reference == "human" or wildcards.reference == "main+human":
-        return rules.bwa_large_index.output
-    else:
-        return rules.bwa_index.output
-
-
-def get_reads(wildcards):
-    # alignment against the human reference genome is done with trimmed reads,
-    # since this alignment is used to generate the ordered, non human reads
-    if (
-        wildcards.reference == "human"
-        or wildcards.reference == "main+human"
-        or wildcards.reference.startswith("polished-")
-        or wildcards.reference.startswith("consensus-")
-    ):
-
-        illumina_pattern = expand(
-            "results/{date}/trimmed/fastp-pe/{sample}.{read}.fastq.gz",
-            read=[1, 2],
-            **wildcards,
-        )
-
-    # theses reads are used to generate the bam file for the BAMclipper and the coverage plot of the main reference
-    elif wildcards.reference == config["preprocessing"]["amplicon-reference"]:
-        return get_non_human_reads(wildcards)
-
-    # aligments to the references main reference genome,
-    # are done with reads, which have undergone the quality control process
-    else:
-        return get_reads_after_qc(wildcards)
-    """
+rule samtools_index:
+    input:
+        "results/mapped/sorted/{genelist}/{sample}.sorted.bam",
+    output:
+        "results/mapped/sorted/{genelist}/{sample}.sorted.bam.bai",
+    log:
+        "logs/samtools/sort/{genelist}/{sample}.index.log",
+    params:
+        extra="",  # optional params string
+    threads: 8  
+    wrapper:
+        "v1.14.1/bio/samtools/index"
+"""

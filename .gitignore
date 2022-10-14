@@ -3,3 +3,4 @@ results/
 .snakemake/
 logs/
 resources/
+report.html

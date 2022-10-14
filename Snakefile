@@ -19,5 +19,5 @@ rule all:
         "results/qc/trimmed/multiqc/multiqc.html",
         expand(
             "results/mapped/sorted/{sample}.sorted.bam.bai",
-            sample = get_samples()
+            sample = get_samples(),
         )

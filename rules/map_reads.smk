@@ -41,7 +41,7 @@ rule map_reads:
             ".sa",
         )
     output:
-        "results/mapped/{sample}.bam"
+        temp("results/mapped/{sample}.bam")
     log:
         "logs/bwa_mem/{sample}"
     params:
@@ -52,6 +52,7 @@ rule map_reads:
     threads: 8
     wrapper:
         "v1.14.1/bio/bwa/mem"
+        
 
 rule samtools_sort:
     input:
