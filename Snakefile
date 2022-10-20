@@ -10,14 +10,14 @@ include: "rules/qc.smk"
 #include: "rules/test.smk"
 include: "rules/trimm.smk"
 include: "rules/map_reads.smk"
-
-#expand("results/trimmed/{sample}_R1_001.fastq.gz","results/trimmed/{sample}_R2_001.fastq.gz" , sample = get_samples())
+include: "rules/call_variants.smk"
 
 rule all:
     input:
         "results/qc/multiqc/multiqc.html",
         "results/qc/trimmed/multiqc/multiqc.html",
         expand(
-            "results/mapped/sorted/{sample}.sorted.bam.bai",
+            "results/variants/{sample}/loci_{loci}.vcf",
             sample = get_samples(),
+            loci = get_gene_loci(),
         )

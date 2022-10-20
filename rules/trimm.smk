@@ -1,6 +1,6 @@
 rule cutadapt:
     input:
-        sample=get_fastqs,
+        get_fastqs
     output:
         fastq1=temp("results/trimmed/{sample}_R1.fastq"),
         fastq2=temp("results/trimmed/{sample}_R2.fastq"),

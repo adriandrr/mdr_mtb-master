@@ -1,8 +1,8 @@
-from snakemake.utils import validate
 import pandas as pd
-from datetime import datetime
 from os import path, getcwd, listdir
 import csv
+sys.path.append("/homes/adrian/mdr_mtb-master/scripts")
+import Codpos_genidx as cg
 
 configfile: "config/config.yaml"
 orgdf = pd.read_csv("resources/validorgs.csv")
@@ -28,13 +28,19 @@ def get_adapters(wildcards):
     return "-a CTGTCTCTTATACACATCT -g AGATGTGTATAAGAGACAG"
 
 def get_gene_loci():
-    gene_loci_list = []
-    for file in os.listdir("/homes/adrian/mdr_mtb-master/resources/pointfinder_db/mycobacterium_tuberculosis"):
-        if file.endswith(".fsa"):
-            gene_loci_list.append(os.path.splitext(file)[0])
-    print(gene_loci_list)
-    print(get_samples())
-    return gene_loci_list
+    gene_pos = pd.read_csv("/homes/adrian/mdr_mtb-master/resources/gene_loci.csv" , header = 0)
+    return gene_pos["gene"].tolist()
+
+def get_gene_coordinates():
+    gene_coordinate_dict = {}
+    gene_loci_list = get_gene_loci()
+    for i in gene_loci_list:
+        gene_coordinate_dict[i] = [cg.find_gene_coords(i)[0],cg.find_gene_coords(i)[1]]
+    return gene_coordinate_dict
+
+def get_region(locus):
+    genedict = get_gene_coordinates()
+    return "AL123456.3:"+str(genedict[locus][0])+"-"+str(genedict[locus][1])
 
 #def is_valid_organism():
 #    for org in pep.sample_table["organism"].values:
@@ -46,3 +52,6 @@ def get_gene_loci():
 
 def get_bwa_index_prefix(index_paths):
     return os.path.splitext(index_paths[0])[0]
+
+wildcard_constraints:
+    sample="[^/.]+"

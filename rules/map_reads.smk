@@ -46,21 +46,20 @@ rule map_reads:
         "logs/bwa_mem/{sample}"
     params:
         index=lambda w, input: get_bwa_index_prefix(input.idx),
-        extra="",
+        extra="",        
         sort="samtools",
         sort_order="coordinate",
     threads: 8
     wrapper:
         "v1.14.1/bio/bwa/mem"
-        
 
 rule samtools_sort:
     input:
         "results/mapped/{sample}.bam",
     output:
-        "results/mapped/sorted/{sample}.sorted.bam",
+        "results/mapped/{sample}.sorted.bam",
     log:
-        "logs/samtools/sort/{sample}.log",
+        "logs/samtools/{sample}.log",
     params:
         extra="-m 4G",
     threads: 8
@@ -69,13 +68,13 @@ rule samtools_sort:
 
 rule samtools_index:
     input:
-        "results/mapped/sorted/{sample}.sorted.bam",
+        "results/mapped/{sample}.sorted.bam",
     output:
-        "results/mapped/sorted/{sample}.sorted.bam.bai",
+        "results/mapped/{sample}.sorted.bam.bai",
     log:
         "logs/samtools/sort/{sample}.index.log",
     params:
         extra="",  # optional params string
-    threads: 8  
+    threads: 4  
     wrapper:
-        "v1.14.1/bio/samtools/index"
+        "v1.17.2/bio/samtools/index"
