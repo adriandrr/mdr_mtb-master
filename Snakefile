@@ -14,10 +14,9 @@ include: "rules/call_variants.smk"
 
 rule all:
     input:
-        "results/qc/multiqc/multiqc.html",
-        "results/qc/trimmed/multiqc/multiqc.html",
+        #"results/qc/multiqc/multiqc.html",
+        #"results/qc/trimmed/multiqc/multiqc.html",
         expand(
-            "results/variants/{sample}/loci_{loci}.vcf",
+            "results/variants/{sample}/varprofile_{sample}.csv",
             sample = get_samples(),
-            loci = get_gene_loci(),
         )

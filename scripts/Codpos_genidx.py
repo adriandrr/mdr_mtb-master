@@ -22,8 +22,8 @@ def genomeidx_to_gene(genomeidx):
         gene = gene_pos.index[i]
         if int(find_gene_coords(gene)[0]) <= genomeidx <= int(find_gene_coords(gene)[1]):
             notfound = 1
-            print([genomeidx_and_gene_to_codon(genomeidx, gene),gene])
-            #return [genomeidx_and_gene_to_codon(genomeidx, gene),gene]
+            #print([genomeidx_and_gene_to_codon(genomeidx, gene),gene])
+            return [genomeidx_and_gene_to_codon(genomeidx, gene),gene]
             break
         else:
             i = i+1
@@ -68,11 +68,11 @@ def genomeidx_and_gene_to_codon(genomeidx, gene):
         START = find_gene_coords(gene)[0]
         POSITION = genomeidx - START
     if POSITION % 3 == 0:
-        return [(POSITION / 3) + 1, POSITION + 1, 1]
+        return [int((POSITION / 3)) + 1, POSITION + 1, 1]
     elif POSITION % 3 == 1:
-        return [((POSITION - 1) / 3) + 1, POSITION + 1, 2]
+        return [int(((POSITION - 1) / 3)) + 1, POSITION + 1, 2]
     elif POSITION % 3 == 2:
-        return [((POSITION - 2) / 3) + 1, POSITION + 1, 3]
+        return [int(((POSITION - 2) / 3)) + 1, POSITION + 1, 3]
 
 if __name__ == "__main__":
     main(sys.argv[1:])
