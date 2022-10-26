@@ -1,7 +1,8 @@
 import sys
 import vcf
-import Codpos_genidx as cg
+import codpos_genidx as cg
 import retrieve_codon as rc
+import retrieve_aac as ra
 
 # The Script is meant to be called from the snakemake-rule "create_variant_profile"
 # Input are vcf files which are created for every sample
@@ -12,23 +13,30 @@ import retrieve_codon as rc
 # These information together with various information from the vcf file are gathered
 # over all vcf files per sample and safed in a csv-file
 
-with open(str(snakemake.output), "w") as outcsv:
-    outcsv.writelines("Gene_name,Gene_pos,Codon_num,Codon_pos,Genome_pos,Ref_Codon,Ref_nuc,Alt_codon,Var_type,Read_depth,Alt_num,Ref:Alt,Var_Qual\n")
+with open(str(snakemake.output), "w") as outcsv, open(str(snakemake.output).replace(".csv","_complex.csv"), "w") as outcsv2:
+    outcsv.writelines("Gene_name,Genome_pos,Codon_num,Codon_pos,Ref_Codon,Ref_aas,Alt_Codon,Alt_aas,Var_type,Read_depth,Alt_num,Var_Qual\n".replace(",","\t"))
+    outcsv2.writelines("Gene_name,Genome_pos,Codon_num,Codon_pos,Ref_Codon,Ref_aas,Alt_Codon,Alt_aas,Var_type,Read_depth,Alt_num,Var_Qual\n".replace(",","\t"))
     for i in snakemake.input:
         v = vcf.Reader(filename=str(i))
         for recs in v:
             line = []
             res = ""
             cod = cg.genomeidx_to_gene(recs.POS)
-            retcod = rc.refcodinfo_to_codon(recs.POS,cod[0][2])
-            varcod = rc.varcodinfo_to_codon(retcod, cod[0][2], recs.ALT)
+            retcod = rc.refcodinfo_to_codon(recs.POS,cod[0][2],cod[1])
+            retaac = ra.codon_to_as(retcod)
+            varcod = rc.varcodinfo_to_codon(retcod, cod[0][2], recs.ALT, cod[1])
+            varaac = ra.codon_to_as(varcod)
             line.extend(
-                [cod[1], cod[0][1], cod[0][0], cod[0][2], 
-                recs.POS, retcod, recs.REF, recs.ALT, varcod, recs.INFO["TYPE"]]
+                [cod[1], recs.POS, cod[0][0], cod[0][2], 
+                 retcod, retaac , varcod, varaac, recs.INFO["TYPE"]]
                 )
             for rec in recs:
-                line.extend([rec["DP"],rec["AO"],rec["AD"]])
+                line.extend([rec["DP"],rec["AO"]])
             line.append(int(recs.QUAL))
             for elem in line:
-                res += str(elem)+","
-            outcsv.write(res[:-1]+"\n")
+                res += str(elem)+"\t"
+            if len(recs.INFO["TYPE"]) == 1 and recs.INFO["TYPE"][0] == 'snp':
+                outcsv.write(res[:-1]+"\n")
+            else:
+                outcsv2.write(res[:-1]+"\n")
+                

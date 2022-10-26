@@ -2,7 +2,7 @@ import pandas as pd
 from os import path, getcwd, listdir
 import csv
 sys.path.append("/homes/adrian/mdr_mtb-master/scripts")
-import Codpos_genidx as cg
+import codpos_genidx as cg
 
 configfile: "config/config.yaml"
 orgdf = pd.read_csv("resources/validorgs.csv")

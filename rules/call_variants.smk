@@ -4,7 +4,7 @@ rule map_to_region:
         "results/mapped/{sample}.sorted.bam",
         "results/mapped/{sample}.sorted.bam.bai",
     output: 
-        "results/variants/{sample}/{sample}_{loci}.vcf",
+        temp("results/variants/{sample}/{sample}_{loci}.vcf"),
     params:
         region=lambda wildcards: get_region(wildcards.loci),
         filter="\"QUAL > 100\""
@@ -12,7 +12,7 @@ rule map_to_region:
         "../envs/freebayes.yaml",
     shell:
         "freebayes -f {input[0]} --region {params.region} {input[1]} |"
-        " vcffilter -f {params.filter} > {output}"
+        " vcffilter -f {params.filter} | vcfallelicprimitives -kg > {output}"
 
 rule create_variant_profile:
     input:

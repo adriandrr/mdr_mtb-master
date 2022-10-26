@@ -11,12 +11,13 @@ include: "rules/qc.smk"
 include: "rules/trimm.smk"
 include: "rules/map_reads.smk"
 include: "rules/call_variants.smk"
+include: "rules/create_antibiogram.smk"
 
 rule all:
     input:
         #"results/qc/multiqc/multiqc.html",
         #"results/qc/trimmed/multiqc/multiqc.html",
         expand(
-            "results/variants/{sample}/varprofile_{sample}.csv",
+            "results/ABres/{sample}/ABres_{sample}.csv",
             sample = get_samples(),
         )

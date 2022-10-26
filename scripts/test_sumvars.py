@@ -1,19 +1,35 @@
-import sys
-import argparse
 import pandas as pd
+from Bio import SeqIO
+import vcf
 
 gene_pos = pd.read_csv("resources/gene_loci.csv" , header = 0, index_col = 0)
+genome = "resources/genomes/mtb-genome.fna"
+record = SeqIO.read(genome, "fasta")
 
-def main(pos):
-    parser = argparse.ArgumentParser(description="Enter genome position and retrieve gene, codon number and codon position")
-    parser.add_argument("-p", "--position", type=int, required=True)
-    pos = parser.parse_args(pos)
-    genomeidx_to_gene(pos.position)
-    
-# genomeidx_to_gene takes genome position as argument and iterates through pandas list
-# of genes and respective coordinates (not really effective). When a range of coordinates where
-# the given argument is in between is found, the gene is returned together with the output
-# of another function which gives [Codonnumber, Position in gene, Position in Codon] a output.
+def varcodinfo_to_codon(Codon, Codon_position, Variant):
+    codon = Codon
+    codpos = Codon_position
+    variant = Variant
+    print("infunction: {}".format(variant))
+    print(len(variant))
+    print(len(variant[0]))
+    if len(variant) == 1 and len(variant[0]) == 1:
+        codon = list(codon)
+        codon[codpos-1] = variant[0]
+        codon = ''.join(codon)
+        return codon
+    else: 
+        return variant
+
+def refcodinfo_to_codon(Genome_position, Codon_position):
+    genpos = Genome_position
+    codpos = Codon_position
+    if codpos == 1:
+        return record.seq[genpos-1:genpos+2]
+    if codpos == 2:
+        return record.seq[genpos-2:genpos+1]
+    if codpos == 3:
+        return record.seq[genpos-3:genpos]
 
 def genomeidx_to_gene(genomeidx):
     notfound = 0
@@ -74,5 +90,18 @@ def genomeidx_and_gene_to_codon(genomeidx, gene):
     elif POSITION % 3 == 2:
         return [int(((POSITION - 2) / 3)) + 1, POSITION + 1, 3]
 
-if __name__ == "__main__":
-    main(sys.argv[1:])
+cod = genomeidx_to_gene(2289068)
+retcod = refcodinfo_to_codon(2289068,cod[0][2])
+print(retcod)
+
+v = vcf.Reader(filename="results/variants/AD_4/AD_4_pncA.vcf")
+for recs in v:
+    print(recs.INFO["TYPE"])
+    #print(varcodinfo_to_codon(retcod, cod[0][2], recs.ALT))
+v2 = vcf.Reader(filename="results/variants/AD_4/AD_4_katG.vcf")
+for recs in v2:
+    print(recs.INFO["TYPE"])
+    if len(recs.INFO["TYPE"]) == 1 and recs.INFO["TYPE"][0] == 'snp':
+        print("yey")
+    else:
+        print("ney") 
