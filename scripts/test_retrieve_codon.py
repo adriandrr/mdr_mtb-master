@@ -87,7 +87,9 @@ def print_stuff(Genome_position,Codon_position,Variant,Gene):
     revretaas = codon_to_as(var)
     print("var aas: "+str(revretaas)+"\n")
 
-print_stuff(7362,1,"C","gyrA")
+"""print_stuff(7362,1,"C","gyrA")
 print_stuff(4407588,3,"C","gidB")
 print("recordshosch")
-print(record.seq[4407585:4407588])
+print(record.seq[4407585:4407588])"""
+
+print_stuff(2726192,2,"T","ahpC-promoter-size-180bp")

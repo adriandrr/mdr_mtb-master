@@ -22,7 +22,7 @@ def genomeidx_to_gene(genomeidx):
         gene = gene_pos.index[i]
         if int(find_gene_coords(gene)[0]) <= genomeidx <= int(find_gene_coords(gene)[1]):
             notfound = 1
-            print([genomeidx_and_gene_to_codon(genomeidx, gene),gene])
+            #print([genomeidx_and_gene_to_codon(genomeidx, gene),gene])
             return [genomeidx_and_gene_to_codon(genomeidx, gene),gene]
             break
         else:
@@ -62,9 +62,18 @@ def is_gene_complement(gene):
 # actual position in the gene and in the codon
 
 def genomeidx_and_gene_to_codon(genomeidx, gene):
+    promdiff = 0
+    if "promoter" in str(gene):
+        numls = []
+        for c in str(gene):
+            if c.isdigit():
+                numls.append(c)
+        promdiff = int("".join(numls))
     if is_gene_complement(gene) == True:
         START = find_gene_coords(gene)[1]
-        POSITION = START - genomeidx    
+        POSITION = START - genomeidx - promdiff
+        if POSITION < 0:
+            POSITION += 1
         if POSITION % 3 == 0:
             return [int((POSITION / 3)) + 1, POSITION + 1, 3]
         elif POSITION % 3 == 1:
@@ -73,7 +82,9 @@ def genomeidx_and_gene_to_codon(genomeidx, gene):
             return [int(((POSITION - 2) / 3)) + 1, POSITION + 1, 1]
     elif is_gene_complement(gene) == False:
         START = find_gene_coords(gene)[0]
-        POSITION = genomeidx - START
+        POSITION = genomeidx - START - promdiff
+        if POSITION < 0:
+            POSITION -= 1
         if POSITION % 3 == 0:
             return [int((POSITION / 3)) + 1, POSITION + 1, 1]
         elif POSITION % 3 == 1:

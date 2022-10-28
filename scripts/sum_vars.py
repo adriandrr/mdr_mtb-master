@@ -14,8 +14,8 @@ import retrieve_aac as ra
 # over all vcf files per sample and safed in a csv-file
 
 with open(str(snakemake.output), "w") as outcsv, open(str(snakemake.output).replace(".csv","_complex.csv"), "w") as outcsv2:
-    outcsv.writelines("Gene_name,Genome_pos,Codon_num,Codon_pos,Ref_Codon,Ref_aas,Alt_Codon,Alt_aas,Var_type,Read_depth,Alt_num,Var_Qual\n".replace(",","\t"))
-    outcsv2.writelines("Gene_name,Genome_pos,Codon_num,Codon_pos,Ref_Codon,Ref_aas,Alt_Codon,Alt_aas,Var_type,Read_depth,Alt_num,Var_Qual\n".replace(",","\t"))
+    outcsv.writelines("Gene_name,Genome_pos,Gene_pos,Codon_num,Codon_pos,Ref_Codon,Ref_aas,Alt_Codon,Alt_aas,Var_type,Read_depth,Alt_num,Var_Qual\n".replace(",","\t"))
+    outcsv2.writelines("Gene_name,Genome_pos,Gene_pos,Codon_num,Codon_pos,Ref_Codon,Ref_aas,Alt_Codon,Alt_aas,Var_type,Read_depth,Alt_num,Var_Qual\n".replace(",","\t"))
     for i in snakemake.input:
         v = vcf.Reader(filename=str(i))
         for recs in v:
@@ -27,7 +27,7 @@ with open(str(snakemake.output), "w") as outcsv, open(str(snakemake.output).repl
             varcod = rc.varcodinfo_to_codon(retcod, cod[0][2], recs.ALT, cod[1])
             varaac = ra.codon_to_as(varcod)
             line.extend(
-                [cod[1], recs.POS, cod[0][0], cod[0][2], 
+                [cod[1], recs.POS, cod[0][1], cod[0][0], cod[0][2], 
                  retcod, retaac , varcod, varaac, recs.INFO["TYPE"]]
                 )
             for rec in recs:
