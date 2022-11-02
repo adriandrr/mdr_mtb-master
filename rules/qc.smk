@@ -65,23 +65,51 @@ rule samtools_flagstat:
     wrapper:
         "0.70.0/bio/samtools/flagstat"
 
-"""
 rule samtools_depth:
     input:
-        get_depth_input,
+        "results/mapped/{sample}.sorted.bam",
+        "results/mapped/{sample}.sorted.bam.bai",
     output:
-        "results/qc/samtools_depth/{names}.txt",
-    log:
-        "logs/samtools/{names}_depth.txt",
+        "results/qc/samtools_depth/{sample}/loci_depth/depth_{loci}.txt",
     conda:
-        "../envs/samtools.yaml"
+        "../envs/samtools.yaml",
     params:
-        ref=config["preprocessing"]["amplicon-reference"],
+        region=lambda wildcards: get_region(wildcards.loci),
     shell:
-        "(samtools depth -aH -o {output} {input} && "
-        " sed -i 's/{params.ref}.3/{wildcards.sample}/' {output})"
-        " 2> {log}"
-"""
+        "samtools depth -aH -r {params.region} -o {output} {input[0]}"
+
+rule samtools_coverage:
+    input:
+        "results/mapped/{sample}.sorted.bam",
+        "results/mapped/{sample}.sorted.bam.bai",
+    output:
+        temp("results/qc/samtools_depth/{sample}/tmp/coverage_{loci}.txt"),
+    conda:
+        "../envs/samtools.yaml",
+    params:
+        region=lambda wildcards: get_region(wildcards.loci),
+    shell:
+        "(samtools coverage -r {params.region} -o {output} {input[0]} &&"
+        " sed -i 's/AL123456.3/{wildcards.loci}/' {output})"
+
+rule samtools_summary:
+    input:
+        expand(
+            "results/qc/samtools_depth/{{sample}}/tmp/coverage_{loci}.txt",
+            loci = get_gene_loci(),
+            sample = get_samples(),
+        )
+    output:
+        "results/qc/samtools_depth/{sample}/coverage_summary.txt",
+    conda:
+        "../envs/samtools.yaml",
+    params:
+        locus=get_gene_loci()
+    shell:
+        "cat {input} >> {output} ; "
+        "echo -ne '\n' >> {output} ; "
+        "sed -i '1!{{/^#rname/d;}}' {output}"
+
 
 # analysis of species diversity present BEFORE removing human contamination
 rule species_diversity_before:
@@ -136,20 +164,6 @@ rule create_krona_chart:
         "../envs/kraken.yaml"
     shell:
         "ktImportTaxonomy -m 3 -t 5 -tax {input.taxonomy_database} -o {output} {input} 2> {log}"
-
-
-rule combine_references:
-    input:
-        "resources/genomes/main.fasta",
-        "resources/genomes/human-genome.fna.gz",
-    output:
-        "resources/genomes/main-and-human-genome.fna.gz",
-    log:
-        "logs/combine-reference-genomes.log",
-    conda:
-        "../envs/unix.yaml"
-    shell:
-        "zcat -f {input} > {output}"
 
 
 # filter out human contamination

@@ -15,9 +15,18 @@ include: "rules/create_antibiogram.smk"
 
 rule all:
     input:
-        #"results/qc/multiqc/multiqc.html",
-        #"results/qc/trimmed/multiqc/multiqc.html",
+        "results/qc/multiqc/multiqc.html",
+        "results/qc/trimmed/multiqc/multiqc.html",
         expand(
-            "results/ABres/{sample}/ABres_{sample}.csv",
+            "results/ABres/{sample}/ABres_{sample}.csv",         
             sample = get_samples(),
-        )
+        ),
+        expand(
+            "results/qc/samtools_depth/{sample}/coverage_summary.txt",            
+            sample = get_samples(),
+        ),        
+        expand(
+            "results/qc/samtools_depth/{sample}/loci_depth/depth_{loci}.txt",
+            loci = get_gene_loci(),
+            sample = get_samples(),
+        ),
