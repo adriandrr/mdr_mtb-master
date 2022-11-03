@@ -7,9 +7,9 @@ pepfile: config["pepfile"]
 
 include: "rules/common.smk"
 include: "rules/qc.smk"
-#include: "rules/test.smk"
 include: "rules/trimm.smk"
 include: "rules/map_reads.smk"
+include: "rules/reduce_reads.smk"
 include: "rules/call_variants.smk"
 include: "rules/create_antibiogram.smk"
 
@@ -22,7 +22,7 @@ rule all:
             sample = get_samples(),
         ),
         expand(
-            "results/qc/samtools_depth/{sample}/coverage_summary.txt",            
+            "results/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt",            
             sample = get_samples(),
         ),        
         expand(

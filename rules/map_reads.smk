@@ -53,19 +53,21 @@ rule map_reads:
     wrapper:
         "v1.14.1/bio/bwa/mem"
 
-rule samtools_sort:
-    input:
-        "results/mapped/{sample}.bam",
-    output:
-        "results/mapped/{sample}.sorted.bam",
-    log:
-        "logs/samtools/{sample}.log",
-    params:
-        extra="-m 4G",
-    threads: 8
-    wrapper:
-        "v1.14.1/bio/samtools/sort"
+if not config["reduce_reads"]["reducing"]:
 
+    rule samtools_sort:
+        input:
+            "results/mapped/{sample}.bam",
+        output:
+            "results/mapped/{sample}.sorted.bam",
+        log:
+            "logs/samtools/{sample}.log",
+        params:
+            extra="-m 4G",
+        threads: 8
+        wrapper:
+            "v1.14.1/bio/samtools/sort"
+    
 rule samtools_index:
     input:
         "results/mapped/{sample}.sorted.bam",
