@@ -21,5 +21,5 @@ preprocessing:
   amplicon-ref-ver: "AL123456.3"
 
 reduce_reads:
-  reducing: True
+  reducing: False
   parameters: 40 # how many reads should be reduced in percent

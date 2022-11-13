@@ -1,4 +1,4 @@
-rule map_to_region:
+rule call_region_variant:
     input:
         "resources/genomes/mtb-genome.fna",
         "results/mapped/{sample}.sorted.bam",

@@ -1,4 +1,5 @@
 import sys
+import re
 import argparse
 import pandas as pd
 
@@ -62,18 +63,13 @@ def is_gene_complement(gene):
 # actual position in the gene and in the codon
 
 def genomeidx_and_gene_to_codon(genomeidx, gene):
-    promdiff = 0
     if "promoter" in str(gene):
-        numls = []
-        for c in str(gene):
-            if c.isdigit():
-                numls.append(c)
-        promdiff = int("".join(numls))
+        promdiff = int(re.search(r'size_(.*?)bp', str(gene)).group(1))
     if is_gene_complement(gene) == True:
         START = find_gene_coords(gene)[1]
         POSITION = START - genomeidx - promdiff
         if POSITION < 0:
-            POSITION += 1
+            POSITION -= 1
         if POSITION % 3 == 0:
             return [int((POSITION / 3)) + 1, POSITION + 1, 3]
         elif POSITION % 3 == 1:
