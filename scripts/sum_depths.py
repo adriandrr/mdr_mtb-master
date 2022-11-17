@@ -1,17 +1,23 @@
 import pandas as pd
 
-#incsv = pd.read_csv(str(snakemake.input), header = 0, sep = '\t').drop(["#CHROM"])
-path = "/homes/adrian/mdr_mtb-master/backup/results(-0)/qc/samtools_depth/10_S4/loci_depth/depth_"
-alr = pd.read_csv(path + "alr.txt", header = 0, sep = '\t').drop(["#CHROM"], axis = 1)
-alr = alr.rename(columns={"POS":"alr_POS","results/mapped/10_S4.sorted.bam":"alr_depth"})
-drrA = pd.read_csv(path + "drrA.txt", header = 0, sep = '\t').drop(["#CHROM"], axis = 1)
-drrA = drrA.rename(columns={"POS":"drrA_POS","results/mapped/10_S4.sorted.bam":"drrA_depth"})
-gyrA = pd.read_csv(path + "gyrA.txt", header = 0, sep = '\t').drop(["#CHROM"], axis = 1)
-gyrA = gyrA.rename(columns={"POS":"gyrA_POS","results/mapped/10_S4.sorted.bam":"gyrA_depth"})
+path_list = list(snakemake.input[0:])
+genenames = list(snakemake.params)
+outfile = str(snakemake.output)
 
-files = [alr, drrA, gyrA]
-res = []
+with open(str(snakemake.output), "w+") as outcsv:
+    if len(outcsv.readlines()) == 0:
+        outcsv.write("Gene,Position,Depth,Mutation,Antibiotic\n")
+    for path in path_list:
+        locus_df = pd.read_csv(path, header = 0, sep = '\t')
+        for name in genenames[0]:  
+            if name in path:    
+                locus_df.rename(
+                    columns={locus_df.columns[0]:"Gene",
+                    locus_df.columns[1]:"Position",
+                    locus_df.columns[2]:"Depth"},inplace=True)
+                locus_df = locus_df.replace("AL123456.3",name,regex=True)
+                locus_df['Mutation'] = '-'
+                locus_df['Antibiotic'] = '-'
+                break
+        locus_df.to_csv(outcsv, mode='a', index=False, header=False)
 
-for file in files:
-    csv_as_string = file.to_string(header=True)
-    outcsv.write(csv_as_string)

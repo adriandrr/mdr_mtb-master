@@ -60,13 +60,13 @@ rule samtools_depth:
         "results/mapped/{sample}.sorted.bam",
         "results/mapped/{sample}.sorted.bam.bai",
     output:
-        "results/qc/samtools_depth/{sample}/loci_depth/depth_{loci}.txt",
+        temp("results/qc/samtools_depth/{sample}/loci_depth/depth_{loci}.txt"),
     conda:
         "../envs/samtools.yaml",
     params:
         region=lambda wildcards: get_region(wildcards.loci),
     shell:
-        "samtools depth -aH -r {params.region} -o {output} {input[0]}"
+        "samtools depth -H -d 1000000 -r {params.region} -o {output} {input[0]}"
 
 rule samtools_coverage:
     input:

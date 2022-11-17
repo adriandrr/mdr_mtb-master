@@ -63,6 +63,7 @@ def is_gene_complement(gene):
 # actual position in the gene and in the codon
 
 def genomeidx_and_gene_to_codon(genomeidx, gene):
+    promdiff = 0
     if "promoter" in str(gene):
         promdiff = int(re.search(r'size_(.*?)bp', str(gene)).group(1))
     if is_gene_complement(gene) == True:
