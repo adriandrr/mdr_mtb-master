@@ -1,7 +1,7 @@
 import pandas as pd
-from os import path, getcwd, listdir
+from os import path
 import csv
-sys.path.append("/homes/adrian/mdr_mtb-master/scripts")
+sys.path.append("scripts/")
 import codpos_genidx as cg
 
 configfile: "config/config.yaml"
@@ -24,11 +24,11 @@ def is_amplicon_data(sample):
     except KeyError:
         return False
 
-def get_adapters(wildcards):
-    return "-a CTGTCTCTTATACACATCT -g AGATGTGTATAAGAGACAG"
+def get_genome_name():
+    return config["preprocessing"]["amplicon-ref-ver"]
 
 def get_gene_loci():
-    gene_pos = pd.read_csv("/homes/adrian/mdr_mtb-master/resources/gene_loci.csv" , header = 0)
+    gene_pos = pd.read_csv("resources/gene_loci.csv" , header = 0)
     return gene_pos["gene"].tolist()
 
 def get_gene_coordinates():
@@ -40,7 +40,7 @@ def get_gene_coordinates():
 
 def get_region(locus):
     genedict = get_gene_coordinates()
-    return "AL123456.3:"+str(genedict[locus][0])+"-"+str(genedict[locus][1])
+    return get_genome_name()+":"+str(genedict[locus][0])+"-"+str(genedict[locus][1])
 
 #def is_valid_organism():
 #    for org in pep.sample_table["organism"].values:

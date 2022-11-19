@@ -1,5 +1,0 @@
-channels:
-  - bioconda
-  - conda-forge
-dependencies:
-  - varlociraptor =3.1

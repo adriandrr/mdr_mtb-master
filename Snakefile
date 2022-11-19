@@ -13,7 +13,7 @@ include: "rules/reduce_reads.smk"
 include: "rules/call_variants.smk"
 include: "rules/create_antibiogram.smk"
 include: "rules/create_depth_profile.smk"
-include: "rules/output-to-report.smk"
+include: "rules/create_plot.smk"
 
 rule all:
     input:

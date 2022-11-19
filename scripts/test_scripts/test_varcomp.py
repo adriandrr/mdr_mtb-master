@@ -1,13 +1,25 @@
 import pandas as pd
 import csv
 
-resdb = pd.read_csv("resources/pointfinder_db/mycobacterium_tuberculosis/resistens-overview.txt", header = 0, sep = '\t')
-comparevcf = pd.read_csv("results/variants/1_S1/varprofile_1_S1.csv", header = 0, sep = '\t')
-stopdb = pd.read_csv("resources/pointfinder_db/mycobacterium_tuberculosis/stop-overview.txt", header = None, sep = '\t')
-stopcodonlist = ["TAG","TAA","TGA"]
+resdb = pd.read_csv(
+    "resources/pointfinder_db/mycobacterium_tuberculosis/resistens-overview.txt",
+    header=0,
+    sep="\t",
+)
+comparevcf = pd.read_csv(
+    "results/variants/1_S1/varprofile_1_S1.csv", header=0, sep="\t"
+)
+stopdb = pd.read_csv(
+    "resources/pointfinder_db/mycobacterium_tuberculosis/stop-overview.txt",
+    header=None,
+    sep="\t",
+)
+stopcodonlist = ["TAG", "TAA", "TGA"]
+
 
 def Average(lst):
     return sum(lst) / len(lst)
+
 
 """for i in range(comparevcf.shape[0]):
     lenlst = []
@@ -54,5 +66,7 @@ for i in range(stopdb.shape[0]):
     var_df = comparevcf.loc[comparevcf["Gene_name"] == stopdb.loc[i][0]]
     for j in var_df["Alt_Codon"].values:
         if j in stopcodonlist:
-            res = var_df[(var_df["Gene_name"] == stopdb.loc[i][0]) & (var_df["Alt_Codon"] == j)].to_string(header=False,index = False)
-            print("res_mut\t{}".format(res.replace(" ","\t")))
+            res = var_df[
+                (var_df["Gene_name"] == stopdb.loc[i][0]) & (var_df["Alt_Codon"] == j)
+            ].to_string(header=False, index=False)
+            print("res_mut\t{}".format(res.replace(" ", "\t")))

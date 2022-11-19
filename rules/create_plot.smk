@@ -10,6 +10,8 @@ rule plot_to_report:
             category="Resistance plot",
         ),
     conda:
-        "../envs/python.yaml"
+        "../envs/altair.yaml"
+    log:
+        "logs/altair/{sample}.log"        
     script:
         "../scripts/altair_plot.py"

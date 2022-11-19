@@ -1,8 +1,8 @@
 rule call_region_variant:
     input:
-        "resources/genomes/mtb-genome.fna",
-        "results/mapped/{sample}.sorted.bam",
-        "results/mapped/{sample}.sorted.bam.bai",
+        fna="resources/genomes/mtb-genome.fna",
+        bam="results/mapped/{sample}.sorted.bam",
+        bai="results/mapped/{sample}.sorted.bam.bai",
     output: 
         temp("results/variants/{sample}/{sample}_{loci}.vcf"),
     params:
@@ -10,8 +10,10 @@ rule call_region_variant:
         filter="\"QUAL > 100\""
     conda:
         "../envs/freebayes.yaml",
+    log:
+        "logs/freebayes/{sample}_{loci}.log"
     shell:
-        "freebayes -f {input[0]} --region {params.region} {input[1]} |"
+        "freebayes -f {input.fna} --region {params.region} {input.bam} |"
         " vcffilter -f {params.filter} | vcfallelicprimitives -kg > {output}"
 
 rule create_variant_profile:
@@ -25,5 +27,7 @@ rule create_variant_profile:
         "results/variants/{sample}/varprofile_{sample}.csv",
     conda:
         "../envs/vcf.yaml"
+    log:
+        "logs/varprofile/{sample}.log"
     script:
         "../scripts/sum_vars.py"

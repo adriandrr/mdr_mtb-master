@@ -18,6 +18,8 @@ if config["reduce_reads"]["reducing"]:
             "results/mapped/temp/{sample}.sorted.bam",
         output:
             temp("results/mapped/temp/{sample}.sorted.sam"),
+        conda:
+            "../envs/samtools.yaml",
         shell:
             "samtools view -h -o {output} {input}"
 
@@ -35,7 +37,9 @@ if config["reduce_reads"]["reducing"]:
         input:
             "results/mapped/{sample}.sorted.sam",
         output:
-            "results/mapped/{sample}.sorted.bam",
+            temp("results/mapped/{sample}.sorted.bam"),
+        conda:
+            "../envs/samtools.yaml",
         shell:
             "samtools view -bS {input} > {output}"
     

@@ -11,6 +11,8 @@ rule create_depth_profile:
         "../envs/pandas.yaml"
     params:
         lambda wildcards: get_gene_loci(),
+    log:
+        "logs/depthprofile/{sample}.log"        
     script:
         "../scripts/sum_depths.py"
 
@@ -22,5 +24,7 @@ rule integrate_resistances:
         "results/ABres/{sample}/DepthProfile_{sample}.csv",
     conda:
         "../envs/pandas.yaml"
+    log:
+        "logs/depthprofile_with_res/{sample}.log"        
     script:
         "../scripts/integr_res.py"

@@ -59,7 +59,7 @@ if not config["reduce_reads"]["reducing"]:
         input:
             "results/mapped/{sample}.bam",
         output:
-            "results/mapped/{sample}.sorted.bam",
+            temp("results/mapped/{sample}.sorted.bam"),
         log:
             "logs/samtools/{sample}.log",
         params:
@@ -72,7 +72,7 @@ rule samtools_index:
     input:
         "results/mapped/{sample}.sorted.bam",
     output:
-        "results/mapped/{sample}.sorted.bam.bai",
+        temp("results/mapped/{sample}.sorted.bam.bai"),
     log:
         "logs/samtools/sort/{sample}.index.log",
     params:

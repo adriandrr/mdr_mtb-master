@@ -23,7 +23,11 @@ rule multiqc:
             sample = get_samples(),
         ),
     output:
-        "results/qc/multiqc/multiqc.html"
+        report("results/qc/multiqc/multiqc.html",
+            caption="../report/multiqc.rst",
+            category="MultiQC",
+            subcategory="Before trimming"
+        )
     log:
         "logs/qc/multiqc.log",
     wrapper:
@@ -49,7 +53,11 @@ rule multiqc_after_trim:
             sample = get_samples(),
         ),
     output:
-        "results/qc/trimmed/multiqc/multiqc.html"
+        report("results/qc/trimmed/multiqc/multiqc.html",
+            caption="../report/multiqc.rst",
+            category="MultiQC",
+            subcategory="After trimming"
+        )
     log:
         "logs/qc/trimmed/multiqc.log",
     wrapper:
@@ -57,29 +65,33 @@ rule multiqc_after_trim:
 
 rule samtools_depth:
     input:
-        "results/mapped/{sample}.sorted.bam",
-        "results/mapped/{sample}.sorted.bam.bai",
+        bam="results/mapped/{sample}.sorted.bam",
+        bai="results/mapped/{sample}.sorted.bam.bai",
     output:
         temp("results/qc/samtools_depth/{sample}/loci_depth/depth_{loci}.txt"),
     conda:
         "../envs/samtools.yaml",
     params:
         region=lambda wildcards: get_region(wildcards.loci),
+    log:
+        "logs/qc/samtools/depth/{sample}_{loci}.log"
     shell:
-        "samtools depth -H -d 1000000 -r {params.region} -o {output} {input[0]}"
+        "samtools depth -H -d 1000000 -r {params.region} -o {output} {input.bam}"
 
 rule samtools_coverage:
     input:
-        "results/mapped/{sample}.sorted.bam",
-        "results/mapped/{sample}.sorted.bam.bai",
+        bam="results/mapped/{sample}.sorted.bam",
+        bai="results/mapped/{sample}.sorted.bam.bai",
     output:
         temp("results/qc/samtools_depth/{sample}/tmp/coverage_{loci}.txt"),
     conda:
         "../envs/samtools.yaml",
     params:
         region=lambda wildcards: get_region(wildcards.loci),
+    log:
+        "logs/qc/samtools/coverage/{sample}_{loci}.log"
     shell:
-        "(samtools coverage -r {params.region} -o {output} {input[0]} &&"
+        "(samtools coverage -r {params.region} -o {output} {input.bam} &&"
         " sed -i 's/AL123456.3/{wildcards.loci}/' {output})"
 
 rule samtools_summary:
@@ -90,11 +102,16 @@ rule samtools_summary:
             sample = get_samples(),
         )
     output:
-        "results/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt",
+        report("results/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt",
+            caption="../report/coverage.rst",
+            category="Coverage text",
+        )
     conda:
         "../envs/samtools.yaml",
     params:
-        locus=get_gene_loci()
+        locus=get_gene_loci(),
+    log:
+        "logs/qc/samtools/summary/{sample}.log"        
     shell:
         "cat {input} >> {output} ; "
         "echo -ne '\n' >> {output} ; "

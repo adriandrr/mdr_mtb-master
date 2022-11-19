@@ -1,4 +1,0 @@
-channels:
-  - anaconda
-dependencies:
-  - svn = 1.10.2

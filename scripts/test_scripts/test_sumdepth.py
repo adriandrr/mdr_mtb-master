@@ -11,18 +11,16 @@ abres7 = "/homes/adrian/mdr_mtb-master/results/ABres/posK_S47/ABres_posK_S47.csv
 
 abdepth1 = "/homes/adrian/mdr_mtb-master/results/ABres/10_S4/DepthProfile_10_S4.csv"
 
-df = pd.read_csv(abres1, header = 0, sep = '\t')
-df2 = pd.read_csv(abdepth1, header = 0, sep = ',')
-new = df.index[df['Genome_pos'] == 761155]
+df = pd.read_csv(abres1, header=0, sep="\t")
+df2 = pd.read_csv(abdepth1, header=0, sep=",")
+new = df.index[df["Genome_pos"] == 761155]
 
 for i in range(df.shape[0]):
-    pos = df.loc[i]['Genome_pos']
-    df2pos = df2.index[df2['Position'] == pos].tolist()[0]
+    pos = df.loc[i]["Genome_pos"]
+    df2pos = df2.index[df2["Position"] == pos].tolist()[0]
     print(df2.iloc[[df2pos]])
-    df2.at[df2pos, 'Mutation'] = (
-        df.loc[i]['Ref_Codon'] +
-        str(df.loc[i]['Codon_num']) +
-        df.loc[i]['Alt_Codon']
+    df2.at[df2pos, "Mutation"] = (
+        df.loc[i]["Ref_Codon"] + str(df.loc[i]["Codon_num"]) + df.loc[i]["Alt_Codon"]
     )
     print(df2.iloc[[df2pos]])
-    #df.loc[i]['Ref_Codon'].to_string()+df.loc[i]['Codon_num'].to_string()+df.loc[i]['Ref_Codon'].to_string()
+    # df.loc[i]['Ref_Codon'].to_string()+df.loc[i]['Codon_num'].to_string()+df.loc[i]['Ref_Codon'].to_string()
