@@ -20,7 +20,7 @@ rule all:
         "results/qc/multiqc/multiqc.html",
         "results/qc/trimmed/multiqc/multiqc.html",
         expand(
-            "results/{sample}/plots/resistance-coverage.png",        
+            "results/plots/{sample}/resistance-coverage.html",        
             sample = get_samples(),
         ),
         expand(

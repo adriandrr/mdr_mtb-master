@@ -8,6 +8,9 @@ abresprofile = str(snakemake.input[0])
 depthprofile = str(snakemake.input[1])
 output = snakemake.output[0]
 
+print(type(abresprofile),abresprofile)
+print(type(depthprofile),depthprofile)
+
 df = pd.read_csv(depthprofile, header = 0, sep = ',')
 df["Gene"]=df["Gene"].str.split('_').str[0]
 
