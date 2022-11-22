@@ -13,7 +13,7 @@ include: "rules/reduce_reads.smk"
 include: "rules/call_variants.smk"
 include: "rules/create_antibiogram.smk"
 include: "rules/create_depth_profile.smk"
-include: "rules/create_plot.smk"
+include: "rules/create_html.smk"
 
 rule all:
     input:
@@ -24,6 +24,6 @@ rule all:
             sample = get_samples(),
         ),
         expand(
-            "results/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt",            
+            "results/qc/samtools_depth/{sample}/{sample}_coverage_summary.html",            
             sample = get_samples(),
         )

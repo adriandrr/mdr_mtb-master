@@ -102,10 +102,7 @@ rule samtools_summary:
             sample = get_samples(),
         )
     output:
-        report("results/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt",
-            caption="../report/coverage.rst",
-            category="Coverage text",
-        )
+        "results/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt",
     conda:
         "../envs/samtools.yaml",
     params:
