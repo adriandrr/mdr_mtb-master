@@ -1,4 +1,4 @@
-# Mdr_mtb-master (working title)
+# MDR_MTb
 
 This snakemake-based pipeline is for predicting antibiotic resistance in Mycobacterium tuberculosis.
 
@@ -19,6 +19,10 @@ Here, we present a pipeline capable of predicting mycobacteria resistances in an
 - A samples table, where the name of the sample and forward and reverse FastQ files are shown (see config/pep/samples.csv)
 
 ## Usage
+### Step 1: Obtain a copy of this workflow
+Create a new github repository using this workflow [as a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+Clone the newly created repository to your local system, into the place where you want to perform the data analysis.
+
 After downloading the code, the FastQ files can be moved to a folder in the same file structure as the Snakefile called data. 
 The names of the samples need to be written in samples.csv. If all reads should be considered, the config file parameter reducing under reduce_reads should be “False".
 
