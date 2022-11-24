@@ -15,4 +15,8 @@ Here, we present a pipeline capable of predicting mycobacteria resistances in a 
 - FastQ files of mycobacterium tuberculosis
 - The pointfinder database
 - A table of gene loci to be investigated (names must be similar as in the pointfinder db)
-- 
+- Several parameters in the config file
+- A samples table, where the name of the sample and forward and reverse FastQ files are shown (see
+
+## Usage
+After downloading the code, the FastQ files can be 
