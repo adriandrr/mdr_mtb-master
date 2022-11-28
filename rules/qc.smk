@@ -68,7 +68,7 @@ rule samtools_depth:
         bam="results/{reduce}/mapped/{sample}.sorted.bam",
         bai="results/{reduce}/mapped/{sample}.sorted.bam.bai",
     output:
-        temp("results/{reduce}/qc/samtools_depth/{sample}/loci_depth/depth_{loci}.txt"),
+        temp("results/{reduce}/samtools_depth/{sample}/loci_depth/depth_{loci}.txt"),
     conda:
         "../envs/samtools.yaml",
     params:
@@ -83,7 +83,7 @@ rule samtools_coverage:
         bam="results/{reduce}/mapped/{sample}.sorted.bam",
         bai="results/{reduce}/mapped/{sample}.sorted.bam.bai",
     output:
-        temp("results/{reduce}/qc/samtools_depth/{sample}/tmp/coverage_{loci}.txt"),
+        temp("results/{reduce}/samtools_depth/{sample}/tmp/coverage_{loci}.txt"),
     conda:
         "../envs/samtools.yaml",
     params:
@@ -97,13 +97,13 @@ rule samtools_coverage:
 rule samtools_summary:
     input:
         expand(
-            "results/{{reduce}}/qc/samtools_depth/{{sample}}/tmp/coverage_{loci}.txt",
+            "results/{{reduce}}/samtools_depth/{{sample}}/tmp/coverage_{loci}.txt",
             loci = get_gene_loci(),
             sample = get_samples(),
             reduce = get_read_reduction(),
         )
     output:
-        "results/{reduce}/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt",
+        "results/{reduce}/samtools_depth/{sample}/{sample}_coverage_summary.txt",
     conda:
         "../envs/samtools.yaml",
     params:

@@ -1,13 +1,13 @@
 rule create_depth_profile:
     input:
         expand(
-            "results/{{reduce}}/qc/samtools_depth/{{sample}}/loci_depth/depth_{loci}.txt",
+            "results/{{reduce}}/samtools_depth/{{sample}}/loci_depth/depth_{loci}.txt",
             loci = get_gene_loci(),
             sample = get_samples(),
             reduce = get_read_reduction(),
         )
     output:
-        temp("results/{reduce}/qc/samtools_depth/{sample}/DepthProfile_{sample}.csv"),
+        temp("results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv"),
     conda:
         "../envs/pandas.yaml"
     params:
@@ -20,7 +20,7 @@ rule create_depth_profile:
 rule integrate_resistances:
     input:
         "results/{reduce}/ABres/{sample}/ABres_{sample}.csv",
-        "results/{reduce}/qc/samtools_depth/{sample}/DepthProfile_{sample}.csv",
+        "results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv",
     output:
         "results/{reduce}/ABres/{sample}/DepthProfile_{sample}.csv",
     conda:

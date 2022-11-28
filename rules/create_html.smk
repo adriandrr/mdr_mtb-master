@@ -22,7 +22,7 @@ rule plot_to_report:
 rule coverage_sum_to_report:
     input:
         expand(
-            "results/{reduce}/qc/samtools_depth/{{sample}}/{{sample}}_coverage_summary.txt",
+            "results/{reduce}/samtools_depth/{{sample}}/{{sample}}_coverage_summary.txt",
             reduce = get_read_reduction(),
         )
     output:

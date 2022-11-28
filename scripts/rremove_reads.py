@@ -1,7 +1,6 @@
 import random
 
 perc = 1 - (int(snakemake.params.red) / 100)
-print(str(snakemake.input))
 if perc == 1:
     with open(str(snakemake.input), "r") as insam, open(str(snakemake.output), "w") as outsam:
         lines = insam.readlines()
@@ -11,7 +10,6 @@ else:
     samdict = {}
     with open(str(snakemake.input), "r") as insam, open(str(snakemake.output), "w") as outsam:
         lines = insam.readlines()
-        print(len(lines))
         num_lines = len(lines)        
         keep = int(num_lines * perc)
         linidx = random.sample(range(6, num_lines - 1), keep)
