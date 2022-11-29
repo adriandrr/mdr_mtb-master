@@ -2,6 +2,7 @@ data/
 results*
 .snakemake/
 logs/
-resources/
 report.html
 backup/
+resources/
+.ipynb_checkpoints/

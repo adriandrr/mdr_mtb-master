@@ -59,9 +59,9 @@ if not config["reduce_reads"]["reducing"]:
         input:
             "results/mapped/{sample}.bam",
         output:
-            temp("results/mapped/{sample}.sorted.bam"),
+            temp("results/{reduce}/mapped/{sample}.sorted.bam"),
         log:
-            "logs/samtools/{sample}.log",
+            "logs/{reduce}/samtools/{sample}.log",
         params:
             extra="-m 4G",
         threads: 8
@@ -70,11 +70,11 @@ if not config["reduce_reads"]["reducing"]:
     
 rule samtools_index:
     input:
-        "results/mapped/{sample}.sorted.bam",
+        "results/{reduce}/mapped/{sample}.sorted.bam",
     output:
-        temp("results/mapped/{sample}.sorted.bam.bai"),
+        temp("results/{reduce}/mapped/{sample}.sorted.bam.bai"),
     log:
-        "logs/samtools/sort/{sample}.index.log",
+        "logs/{reduce}/samtools/sort/{sample}.index.log",
     params:
         extra="",  # optional params string
     threads: 4  

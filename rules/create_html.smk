@@ -1,10 +1,14 @@
 rule plot_to_report:
     input:
-        "results/ABres/{sample}/ABres_{sample}.csv",
-        "results/ABres/{sample}/DepthProfile_{sample}.csv",
+        res=expand("results/{reduce}/ABres/{{sample}}/ABres_{{sample}}.csv",
+            reduce = get_read_reduction(),
+        ),
+        depth=expand("results/{reduce}/ABres/{{sample}}/DepthProfile_{{sample}}.csv",
+            reduce = get_read_reduction(),
+        )
     output:
         report(
-            "results/plots/{sample}/resistance-coverage.html",
+            "results/html/{sample}_resistance-coverage.svg",
             caption="../report/resistance.rst",
             category="Resistance plot",
         ),
@@ -12,22 +16,24 @@ rule plot_to_report:
         "../envs/altair.yaml"
     params:
         "{sample}"
-    log:
-        "logs/altair/{sample}.log"        
     script:
         "../scripts/altair_plot.py"
 
 rule coverage_sum_to_report:
     input:
-        "results/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt"
+        expand(
+            "results/{reduce}/samtools_depth/{{sample}}/{{sample}}_coverage_summary.txt",
+            reduce = get_read_reduction(),
+        )
     output:
-        report("results/qc/samtools_depth/{sample}/{sample}_coverage_summary.html",
+        report(
+            "results/html/{sample}_coverage_summary.html",
             caption="../report/coverage.rst",
             category="Loci coverage details",
-        )
+        ),
     conda:
         "../envs/pandas.yaml",
     params:
-        "{sample}"    
+        "{sample}"
     script:
         "../scripts/covsum_to_html.py"

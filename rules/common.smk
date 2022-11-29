@@ -53,5 +53,11 @@ def get_region(locus):
 def get_bwa_index_prefix(index_paths):
     return os.path.splitext(index_paths[0])[0]
 
+def get_read_reduction():
+    if config["reduce_reads"]["reducing"] == True:
+        return config["reduce_reads"]["parameters"]
+    if config["reduce_reads"]["reducing"] == False:
+        return ["summary"]
+
 wildcard_constraints:
     sample="[^/.]+"

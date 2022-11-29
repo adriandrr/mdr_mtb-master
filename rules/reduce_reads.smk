@@ -27,17 +27,19 @@ if config["reduce_reads"]["reducing"]:
         input:
             "results/mapped/temp/{sample}.sorted.sam",
         output:
-            temp("results/mapped/{sample}.sorted.sam"),
+            temp("results/{reduce}/mapped/{sample}.sorted.sam"),
         params:
-            config["reduce_reads"]["parameters"]
+            red="{reduce}"
+        log:
+            "logs/{reduce}/reduce_reads/{sample}.log",            
         script:
             "../scripts/rremove_reads.py"
     
     rule samtools_convert_tobam:
         input:
-            "results/mapped/{sample}.sorted.sam",
+            "results/{reduce}/mapped/{sample}.sorted.sam",
         output:
-            temp("results/mapped/{sample}.sorted.bam"),
+            temp("results/{reduce}/mapped/{sample}.sorted.bam"),
         conda:
             "../envs/samtools.yaml",
         shell:

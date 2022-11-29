@@ -65,31 +65,31 @@ rule multiqc_after_trim:
 
 rule samtools_depth:
     input:
-        bam="results/mapped/{sample}.sorted.bam",
-        bai="results/mapped/{sample}.sorted.bam.bai",
+        bam="results/{reduce}/mapped/{sample}.sorted.bam",
+        bai="results/{reduce}/mapped/{sample}.sorted.bam.bai",
     output:
-        temp("results/qc/samtools_depth/{sample}/loci_depth/depth_{loci}.txt"),
+        temp("results/{reduce}/samtools_depth/{sample}/loci_depth/depth_{loci}.txt"),
     conda:
         "../envs/samtools.yaml",
     params:
         region=lambda wildcards: get_region(wildcards.loci),
     log:
-        "logs/qc/samtools/depth/{sample}_{loci}.log"
+        "logs/{reduce}/qc/samtools/depth/{sample}_{loci}.log"
     shell:
         "samtools depth -H -d 1000000 -r {params.region} -o {output} {input.bam}"
 
 rule samtools_coverage:
     input:
-        bam="results/mapped/{sample}.sorted.bam",
-        bai="results/mapped/{sample}.sorted.bam.bai",
+        bam="results/{reduce}/mapped/{sample}.sorted.bam",
+        bai="results/{reduce}/mapped/{sample}.sorted.bam.bai",
     output:
-        temp("results/qc/samtools_depth/{sample}/tmp/coverage_{loci}.txt"),
+        temp("results/{reduce}/samtools_depth/{sample}/tmp/coverage_{loci}.txt"),
     conda:
         "../envs/samtools.yaml",
     params:
         region=lambda wildcards: get_region(wildcards.loci),
     log:
-        "logs/qc/samtools/coverage/{sample}_{loci}.log"
+        "logs/{reduce}/qc/samtools/coverage/{sample}_{loci}.log"
     shell:
         "(samtools coverage -r {params.region} -o {output} {input.bam} &&"
         " sed -i 's/AL123456.3/{wildcards.loci}/' {output})"
@@ -97,18 +97,19 @@ rule samtools_coverage:
 rule samtools_summary:
     input:
         expand(
-            "results/qc/samtools_depth/{{sample}}/tmp/coverage_{loci}.txt",
+            "results/{{reduce}}/samtools_depth/{{sample}}/tmp/coverage_{loci}.txt",
             loci = get_gene_loci(),
             sample = get_samples(),
+            reduce = get_read_reduction(),
         )
     output:
-        "results/qc/samtools_depth/{sample}/{sample}_coverage_summary.txt",
+        "results/{reduce}/samtools_depth/{sample}/{sample}_coverage_summary.txt",
     conda:
         "../envs/samtools.yaml",
     params:
         locus=get_gene_loci(),
     log:
-        "logs/qc/samtools/summary/{sample}.log"        
+        "logs/{reduce}/qc/samtools/summary/{sample}.log"        
     shell:
         "cat {input} >> {output} ; "
         "echo -ne '\n' >> {output} ; "

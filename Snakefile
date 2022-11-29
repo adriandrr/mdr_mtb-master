@@ -20,10 +20,10 @@ rule all:
         "results/qc/multiqc/multiqc.html",
         "results/qc/trimmed/multiqc/multiqc.html",
         expand(
-            "results/plots/{sample}/resistance-coverage.html",        
+            "results/html/{sample}_resistance-coverage.svg",        
             sample = get_samples(),
         ),
         expand(
-            "results/qc/samtools_depth/{sample}/{sample}_coverage_summary.html",            
+            "results/html/{sample}_coverage_summary.html",            
             sample = get_samples(),
         )
