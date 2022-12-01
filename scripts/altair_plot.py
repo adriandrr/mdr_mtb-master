@@ -12,9 +12,9 @@ output = snakemake.output[0]
 lis = []
 for abres,depth in zip(abresprofile,depthprofile):
     df = pd.read_csv(depth, header = 0, sep = ',')
+    df2 = pd.read_csv(abres, header = 0, sep = ',')    
+    
     df["Gene"]=df["Gene"].str.split('_').str[0]
-
-    df2 = pd.read_csv(abres, header = 0, sep = '\t')
     df2["Mut_gene"]=df2["Mut_gene"].str.split('_').str[0]
     lsmut = []
     lslocmut = []

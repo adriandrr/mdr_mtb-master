@@ -7,7 +7,7 @@ rule create_depth_profile:
             reduce = get_read_reduction(),
         )
     output:
-        temp("results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv"),
+        "results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv",
     conda:
         "../envs/pandas.yaml"
     params:
@@ -19,10 +19,11 @@ rule create_depth_profile:
 
 rule integrate_resistances:
     input:
-        "results/{reduce}/ABres/{sample}/ABres_{sample}.csv",
-        "results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv",
+        resin = "results/{reduce}/ABres/{sample}/tmp/ABres_{sample}.csv",
+        depthin = "results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv",
     output:
-        "results/{reduce}/ABres/{sample}/DepthProfile_{sample}.csv",
+        resout = "results/{reduce}/ABres/{sample}/ABres_{sample}.csv",
+        depthout = "results/{reduce}/ABres/{sample}/DepthProfile_{sample}.csv",
     conda:
         "../envs/pandas.yaml"
     log:

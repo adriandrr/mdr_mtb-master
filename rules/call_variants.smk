@@ -7,7 +7,7 @@ rule call_region_variant:
         temp("results/{reduce}/variants/{sample}/{sample}_{loci}.vcf"),
     params:
         region=lambda wildcards: get_region(wildcards.loci),
-        filter="\"QUAL > 100\""
+        filter="\"QUAL > 50\""
     conda:
         "../envs/freebayes.yaml",
     log:
