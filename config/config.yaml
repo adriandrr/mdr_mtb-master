@@ -20,4 +20,4 @@ preprocessing:
 
 reduce_reads:
   reducing: False # should the reads be reduced -> True; if not so -> False
-  parameters: [0,10,20,30,40,50,60,70,80] # how many reads should be reduced in percent
+  parameters: [0,10] # how many reads should be reduced in percent

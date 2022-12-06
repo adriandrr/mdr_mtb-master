@@ -6,3 +6,4 @@ report.html
 backup/
 resources/
 .ipynb_checkpoints/
+geckodriver.log
