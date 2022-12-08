@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import ast
 
-ab_df = pd.read_csv(str(snakemake.input[0]), header=0, sep="\t")
+ab_df = pd.read_csv(str(snakemake.input[0]), header=0, sep=",")
 dp_df = pd.read_csv(str(snakemake.input[1]), header=0, sep=",")
 
 # drops all mutation with a positional read depth below 8

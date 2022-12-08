@@ -7,7 +7,7 @@ rule create_depth_profile:
             reduce = get_read_reduction(),
         )
     output:
-        "results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv",
+        temp("results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv"),
     conda:
         "../envs/pandas.yaml"
     params:

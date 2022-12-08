@@ -7,3 +7,4 @@ backup/
 resources/
 .ipynb_checkpoints/
 geckodriver.log
+samples_*
