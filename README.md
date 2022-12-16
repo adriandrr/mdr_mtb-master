@@ -46,7 +46,7 @@ conda install -c bioconda snakemake
 ### Step 5: Install snakemake
 
 Start the workflow with the command "snakemake --cores all --use-conda" when you are in the same file structure as the Snakefile. 
-To sum the essential results in a HTML file, use "snakemake --report" after the workflow is finished.
+A snakemake report.html file is created automatically in the results folder.
 
 ## Output
 As an output, an interactive graphic shows all found resistance-causing mutations and coverage details on the mutation and the gene locus.
