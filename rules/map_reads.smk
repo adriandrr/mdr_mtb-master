@@ -76,7 +76,7 @@ rule samtools_index:
     log:
         "logs/{reduce}/samtools/sort/{sample}.index.log",
     params:
-        extra="",  # optional params string
+        extra="",
     threads: 4  
     wrapper:
         "v1.17.2/bio/samtools/index"

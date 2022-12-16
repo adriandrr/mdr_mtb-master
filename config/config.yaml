@@ -2,9 +2,6 @@ pepfile: config/pep/config.yaml
 
 gene_loc: "/resources/gene_loci.csv"
 
-bacterium-reference-genome:
-  - NC_000962.3
-
 mtb-genome-download-path:
   - ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/195/955/GCA_000195955.2_ASM19595v2/GCA_000195955.2_ASM19595v2_genomic.fna.gz
 
