@@ -43,7 +43,7 @@ conda activate sm
 conda install -c bioconda snakemake
 ```
 
-### Step 5: Install snakemake
+### Step 5: Start snakemake
 
 Start the workflow with the command "snakemake --cores all --use-conda" when you are in the same file structure as the Snakefile. 
 A snakemake report.html file is created automatically in the results folder.
