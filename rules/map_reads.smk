@@ -14,14 +14,14 @@ rule bwa_index:
     input:
         "resources/genomes/mtb-genome.fna.gz",
     output:
-        idx=multiext(
+        idx=temp(multiext(
             "results/bwa/index/mtb-genome.fasta",
             ".amb",
             ".ann",
             ".bwt",
             ".pac",
             ".sa",
-        ),
+        )),
     params:
         prefix=lambda w, output: get_bwa_index_prefix(output),
     log:

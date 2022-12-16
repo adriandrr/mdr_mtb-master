@@ -14,31 +14,8 @@ include: "rules/call_variants.smk"
 include: "rules/create_antibiogram.smk"
 include: "rules/create_depth_profile.smk"
 include: "rules/create_html.smk"
+include: "rules/create_report.smk"
 
-if config["reduce_reads"]["reducing"] == False:
-    rule all:
-        input:
-            "results/qc/multiqc/multiqc.html",
-            "results/qc/trimmed/multiqc/multiqc.html",
-            expand(
-                "results/html/{sample}_resistance-coverage.html",        
-                sample = get_samples(),
-            ),
-            expand(
-                "results/html/{sample}_coverage_summary.html",            
-                sample = get_samples(),
-            )
-
-if config["reduce_reads"]["reducing"] == True:
-    rule all:
-        input:
-            "results/qc/multiqc/multiqc.html",
-            "results/qc/trimmed/multiqc/multiqc.html",
-            expand(
-                "results/html/{sample}_resistance-coverage.svg",        
-                sample = get_samples(),
-            ),
-            expand(
-                "results/html/{sample}_coverage_summary.html",            
-                sample = get_samples(),
-            )
+rule all:
+    input:
+        "results/report.html"

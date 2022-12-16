@@ -4,7 +4,7 @@ rule cutadapt:
     output:
         fastq1=temp("results/trimmed/{sample}_R1.fastq"),
         fastq2=temp("results/trimmed/{sample}_R2.fastq"),
-        qc="results/qc/trimmed/cutadapt/{sample}.qc.txt",
+        qc=temp("results/qc/trimmed/cutadapt/{sample}.qc.txt"),
     params:
         # https://cutadapt.readthedocs.io/en/stable/guide.html#adapter-types
         adapters=config["illumina_adapters"],
