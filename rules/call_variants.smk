@@ -1,4 +1,5 @@
 rule call_region_variant:
+# The package freebayes is used to call mutations in the previously selected regions
     input:
         fna="resources/genomes/mtb-genome.fna",
         bam="results/{reduce}/mapped/{sample}.sorted.bam",
@@ -17,6 +18,7 @@ rule call_region_variant:
         " vcffilter -f {params.filter} | vcfallelicprimitives -kg > {output}"
 
 rule create_variant_profile:
+# This rule sums all variants of a sample and adds further information from different sources
     input:
         expand(
             "results/{{reduce}}/variants/{{sample}}/{{sample}}_{loci}.vcf",

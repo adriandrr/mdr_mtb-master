@@ -1,6 +1,6 @@
 # MYCRes
 
-This snakemake-based pipeline is for predicting antibiotic resistance in Mycobacterium tuberculosis.
+This snakemake-based pipeline is a tool for predicting antibiotic resistance in Mycobacterium tuberculosis.
 
 ## Background
 The tuberculosis disease caused by mycobacterium tuberculosis is still a global concern. 
@@ -12,7 +12,7 @@ Here, we present a pipeline capable of predicting mycobacteria resistances in an
 ![mdrmtbworkflow](https://user-images.githubusercontent.com/95088942/203801407-31fec80a-f628-45ef-a9aa-372e6e7f2256.png)
 
 ## Input
-- FastQ files of mycobacterium tuberculosis
+- FastQ files of mycobacterium tuberculosis (illumina-sequenced short-read)
 - The pointfinder database
 - A table of gene loci to be investigated (names must be similar to the pointfinder DB)
 - Several parameters in the config file
@@ -26,7 +26,7 @@ Clone the newly created repository to your local system, into the place where yo
 ### Step 2: Setup database
 
 For mutation database, the pointfinder_db database was used (Johnsen et al. 2019 - https://bitbucket.org/genomicepidemiology/pointfinder_db/src/master/).
-To use this database, some changes were made. The changed database files are stored in a folder called database. Rename this folder to 'resources' to match the path configuration of the pipeline.
+To parse this database, some changes were made. The changed database files are stored in a folder called database. Rename this folder to 'resources' to match the path configuration of the pipeline.
 Also, here a file called 'gene_loci.csv' can be found. This file specifies the loci which shall be investigated by the pipeline. If some changes to investigated loci are to be made, the name of the new locus must be present in the resistens-overview.txt database file from pointfinder.
 
 ### Step 3: Setup data
@@ -36,7 +36,7 @@ The names of the samples as well as single single read names need to be written 
 
 ### Step 4: Install snakemake
 
-MYCRes is a snakemake-based workflow. Therefore, the installation of this package is necessary to start it. We used snakemake version 7.18.2 in a conda environment. For that we used:
+MYCRes is a snakemake-based workflow. Therefore, the installation of this package is necessary to start it. We used snakemake version 7.18.2 in a conda environment. For that you can use:
 ```
 conda create --name sm
 conda activate sm

@@ -1,4 +1,5 @@
 rule create_antibiogram:
+# This key rule is used to compare found mutations with the resistance mutation database
     input:
         "results/{reduce}/variants/{sample}/varprofile_{sample}.csv",
     output:

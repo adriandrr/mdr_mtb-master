@@ -6,7 +6,7 @@ import retrieve_aac as ra
 
 # The Script is meant to be called from the snakemake-rule "create_variant_profile"
 # Input are vcf files which are created for every sample
-# The Script parses the vcf file anditerates over all variants called
+# The Script parses the vcf file and iterates over all variants called
 # Two external scripts are called with the variant position
 # 1. genomeidx_to_gene gives Codon-infos and gene name
 # 2. rescinfo_to_codon gives the whole reference Codon in reading frame

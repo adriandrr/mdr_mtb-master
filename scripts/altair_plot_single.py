@@ -1,3 +1,5 @@
+# This script gathers information from result files and plots it in an interactive altair plot
+
 import altair as alt
 import pandas as pd
 import warnings

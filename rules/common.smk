@@ -17,13 +17,6 @@ def get_fastqs(wildcards):
 def get_reads(wildcards):  
     return "results/trimmed/{sample}.fastq"
 
-def is_amplicon_data(sample):
-    sample = pep.sample_table.loc[sample]
-    try:
-        return bool(int(sample["is_amplicon_data"]))
-    except KeyError:
-        return False
-
 def get_genome_name():
     return config["preprocessing"]["amplicon-ref-ver"]
 
@@ -41,14 +34,6 @@ def get_gene_coordinates():
 def get_region(locus):
     genedict = get_gene_coordinates()
     return get_genome_name()+":"+str(genedict[locus][0])+"-"+str(genedict[locus][1])
-
-#def is_valid_organism():
-#    for org in pep.sample_table["organism"].values:
-#        if org in list(orgdf["alias"]):
-#            print("{} found".format(org))
-#        else:
-#            print("Organism not found, see list {}".format(list(orgdf["alias"])))
-#    return()
 
 def get_bwa_index_prefix(index_paths):
     return os.path.splitext(index_paths[0])[0]

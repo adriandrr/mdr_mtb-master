@@ -1,7 +1,7 @@
 import pandas as pd
 
 depthsum = snakemake.input
-tabtitle = str(snakemake.params) +" coverage summery"
+tabtitle = str(snakemake.params) +" coverage summary"
 
 frames=[]
 for sum in depthsum:

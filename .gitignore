@@ -8,3 +8,4 @@ resources/
 .ipynb_checkpoints/
 geckodriver.log
 samples_*
+test_scripts/

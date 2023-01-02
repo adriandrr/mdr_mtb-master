@@ -1,5 +1,8 @@
 if config["reduce_reads"]["reducing"]:
-
+# Pipeline path is only accessed when reads shall be reduced
+# The mapped bam files are sorted and converted to sam files
+# A process is applied, to reduce a previously defined percentage of reads
+# from the sam files. The sam file is then reconverted into a bam file
     rule samtools_sort:
         input:
             "results/mapped/{sample}.bam",

@@ -1,3 +1,5 @@
+# A script summarising different locus depth information to one file
+
 import pandas as pd
 
 path_list = list(snakemake.input[0:])

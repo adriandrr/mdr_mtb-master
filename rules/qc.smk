@@ -1,4 +1,5 @@
 rule fastqc:
+# The first applied rule, it performs a fastqc analysis with the given fastq input files
     input:
         get_fastqs,
     output:
@@ -11,6 +12,7 @@ rule fastqc:
 
 
 rule multiqc:
+# This rule performs a multiqc analysis with the given fastq input files, summarising fastqc results
     input:
         expand(
             "results/qc/fastqc/{sample}_fastqc.zip",
@@ -28,6 +30,7 @@ rule multiqc:
         "v1.14.1/bio/multiqc"
 
 rule fastqc_after_trim:
+# This rule performs a fastqc analysis with the given fastq input files after trimming
     input:
             "results/trimmed/{sample}_R1.fastq",
             "results/trimmed/{sample}_R2.fastq",
@@ -41,6 +44,7 @@ rule fastqc_after_trim:
 
 
 rule multiqc_after_trim:
+# This rule performs a multiqc analysis with the given fastq input files after trimming, summarising fastqc results
     input:
         expand(
             "results/qc/trimmed/fastqc/{sample}_fastqc.zip",
@@ -58,6 +62,7 @@ rule multiqc_after_trim:
         "v1.14.1/bio/multiqc"
 
 rule samtools_depth:
+# This rule creates a file with all base depth value on every locus
     input:
         bam="results/{reduce}/mapped/{sample}.sorted.bam",
         bai="results/{reduce}/mapped/{sample}.sorted.bam.bai",
@@ -73,6 +78,7 @@ rule samtools_depth:
         "samtools depth -H -d 1000000 -r {params.region} -o {output} {input.bam}"
 
 rule samtools_coverage:
+# Here, a summarising file is created with information about the coverage from a locus of a sample
     input:
         bam="results/{reduce}/mapped/{sample}.sorted.bam",
         bai="results/{reduce}/mapped/{sample}.sorted.bam.bai",
@@ -89,6 +95,7 @@ rule samtools_coverage:
         " sed -i 's/AL123456.3/{wildcards.loci}/' {output})"
 
 rule samtools_summary:
+# Here, a summarising file is created with information about the coverage from all loci of a sample
     input:
         expand(
             "results/{{reduce}}/samtools_depth/{{sample}}/tmp/coverage_{loci}.txt",

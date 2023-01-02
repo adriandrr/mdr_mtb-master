@@ -1,5 +1,7 @@
 if config["reduce_reads"]["reducing"] == False:
+# Pipeline path is only accessed when no reads shall be reduced
     rule plot_to_report:
+    # This rule gathers information from the results file and creates a summarising plot
         input:
             res=expand("results/{reduce}/ABres/{{sample}}/ABres_{{sample}}.csv",
                 reduce = get_read_reduction(),
@@ -21,7 +23,9 @@ if config["reduce_reads"]["reducing"] == False:
             "../scripts/altair_plot_single.py"
 
 elif config["reduce_reads"]["reducing"] == True:
+# Pipeline path is only accessed when reads shall be reduced
     rule plot_to_report:
+    # This rule gathers information from the results file and creates a summarising plot
         input:
             res=expand("results/{reduce}/ABres/{{sample}}/ABres_{{sample}}.csv",
                 reduce = get_read_reduction(),
@@ -43,6 +47,7 @@ elif config["reduce_reads"]["reducing"] == True:
             "../scripts/altair_plot_list.py"    
 
 rule coverage_sum_to_report:
+# This rule gathers information from the results file and creates a summarising plot
     input:
         expand(
             "results/{reduce}/samtools_depth/{{sample}}/{{sample}}_coverage_summary.txt",

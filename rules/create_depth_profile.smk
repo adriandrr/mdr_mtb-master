@@ -1,4 +1,5 @@
 rule create_depth_profile:
+# Here, a depth profile is created with every position in every locus with the corresponding base coverage
     input:
         expand(
             "results/{{reduce}}/samtools_depth/{{sample}}/loci_depth/depth_{loci}.txt",
@@ -18,6 +19,7 @@ rule create_depth_profile:
         "../scripts/sum_depths.py"
 
 rule integrate_resistances:
+# This rule connects certain information explicitly in the input files to both output files
     input:
         resin = "results/{reduce}/ABres/{sample}/tmp/ABres_{sample}.csv",
         depthin = "results/{reduce}/samtools_depth/{sample}/DepthProfile_{sample}.csv",

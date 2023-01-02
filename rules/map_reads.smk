@@ -1,4 +1,5 @@
 rule get_genome:
+# This rule downloads the reference genome defined in the config file
     output:
         "resources/genomes/mtb-genome.fna.gz",
     params:
@@ -11,6 +12,7 @@ rule get_genome:
         "curl -SL -o {output} {params.mtb_genome} 2> {log}"
 
 rule bwa_index:
+# A rule necessary to index the reference genome
     input:
         "resources/genomes/mtb-genome.fna.gz",
     output:
@@ -30,6 +32,7 @@ rule bwa_index:
         "v1.14.1/bio/bwa/index"
 
 rule map_reads:
+# Here, the trimmed reads are mapped against the reference genome with bwa
     input:
         reads=["results/trimmed/{sample}_R1.fastq", "results/trimmed/{sample}_R2.fastq"],
         idx=multiext(
@@ -54,8 +57,9 @@ rule map_reads:
         "v1.14.1/bio/bwa/mem"
 
 if not config["reduce_reads"]["reducing"]:
-
+# Pipeline path is only accessed when no reads shall be reduced
     rule samtools_sort:
+    # This rule sorts the already mapped bam files
         input:
             "results/mapped/{sample}.bam",
         output:
@@ -69,6 +73,7 @@ if not config["reduce_reads"]["reducing"]:
             "v1.14.1/bio/samtools/sort"
     
 rule samtools_index:
+# This rule creates an index to the already mapped and sorted bam files
     input:
         "results/{reduce}/mapped/{sample}.sorted.bam",
     output:

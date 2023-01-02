@@ -1,3 +1,5 @@
+# A script to translate base codons to aminoacids
+
 from Bio.Seq import Seq
 
 

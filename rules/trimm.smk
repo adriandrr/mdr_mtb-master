@@ -1,4 +1,5 @@
 rule cutadapt:
+# This rule is used to cut of residual adapters from the sequencing
     input:
         get_fastqs
     output:

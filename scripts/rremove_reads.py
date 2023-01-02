@@ -1,3 +1,5 @@
+# A script which randomly removes a certain number of lines from a samfile
+
 import random
 
 perc = 1 - (int(snakemake.params.red) / 100)
