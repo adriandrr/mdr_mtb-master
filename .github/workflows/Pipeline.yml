@@ -1,14 +1,11 @@
 name: Pipeline Test
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
   Run_pipeline:
     runs-on: ubuntu-latest
     steps:
-        uses: snakemake/snakemake-github-action@v1
+      - uses: snakemake/snakemake-github-action@v1
         with:
           directory: .tests
           snakefile: workflow/Snakefile

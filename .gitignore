@@ -1,4 +1,4 @@
-data_self/
+data/
 results*
 .snakemake/
 logs/
