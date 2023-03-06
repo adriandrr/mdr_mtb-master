@@ -22,5 +22,5 @@ jobs:
         if: steps.check_files.outputs.files_exists == 'false'
         uses: actions/github-script@v3
         run: |
-        echo Some necessary files are missing. Check directory build
-        exit 1
+          echo Some necessary files are missing. Check directory build
+          exit 1
