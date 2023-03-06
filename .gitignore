@@ -9,3 +9,7 @@ resources_self/
 geckodriver.log
 samples_*
 test_scripts/
+test_altair.ipynb
+masterthesis_results
+tb-profiler
+.gitignore
