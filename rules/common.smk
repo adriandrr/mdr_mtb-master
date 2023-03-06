@@ -5,7 +5,7 @@ sys.path.append("scripts/")
 import codpos_genidx as cg
 
 configfile: "config/config.yaml"
-orgdf = pd.read_csv("resources/validorgs.csv")
+#orgdf = pd.read_csv("resources/validorgs.csv")
 
 
 def get_samples():
