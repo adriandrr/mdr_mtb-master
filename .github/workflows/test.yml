@@ -12,7 +12,7 @@ jobs:
         id: check_files
         uses: andstor/file-existence-action@v2
         with:
-          files: "Snakefile, resources/pointfinder_db/mycobacterium-tuberculosis/resistens-overview.txt, config/config.yaml, config/pep/samples.csv"
+          files: "Snakefile, resources/pointfinder_db/mycobacterium_tuberculosis/resistens-overview.txt, config/config.yaml, config/pep/samples.csv, boop.txt"
 
       - name: File exists
         if: steps.check_files.outputs.files_exists == 'true'
@@ -21,6 +21,6 @@ jobs:
       - name: File is missing
         if: steps.check_files.outputs.files_exists == 'false'
         uses: actions/github-script@v3
-        with:
-          script: |
-            core.setFailed('Some necessary files are missing. Check directory build') 
+        run: |
+        echo Some necessary files are missing. Check directory build
+        exit 1
