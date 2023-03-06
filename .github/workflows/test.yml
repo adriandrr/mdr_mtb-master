@@ -17,7 +17,8 @@ jobs:
       - name: File exists
         if: steps.check_files.outputs.files_exists == 'true'
         run: echo All files exists!
+      
+      - name: File is missing
         if: steps.check_files.outputs.files_exists == 'false'
-        with:
-          script: |
-            core.setFailed('Some necessary files are missing. Check directory build') 
+        script: |
+          core.setFailed('Some necessary files are missing. Check directory build') 
