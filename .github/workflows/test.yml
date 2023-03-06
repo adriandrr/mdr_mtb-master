@@ -20,5 +20,7 @@ jobs:
       
       - name: File is missing
         if: steps.check_files.outputs.files_exists == 'false'
-        script: |
-          core.setFailed('Some necessary files are missing. Check directory build') 
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Some necessary files are missing. Check directory build') 
