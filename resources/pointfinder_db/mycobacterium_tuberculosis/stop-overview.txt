@@ -1,4 +1,0 @@
-katG_promoter_size_107bp	katG	1	N	N	*	ISONIAZID	-
-ethA_promoter_size_74bp	ethA	1	N	N	*	ETHIONAMIDE	-
-pncA_promoter_size_107bp	pncA	1	N	N	*	PYRAZINAMIDE	-
-gidB	gidB	1	N	N	*	STREPTOMYCIN	-

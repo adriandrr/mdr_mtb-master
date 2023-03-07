@@ -4,7 +4,7 @@ results*
 logs/
 report.html
 backup/
-resources/
+resources_self/
 .ipynb_checkpoints/
 geckodriver.log
 samples_*
