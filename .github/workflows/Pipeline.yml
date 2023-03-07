@@ -5,9 +5,9 @@ jobs:
   Run_pipeline:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Test workflow
-      uses: snakemake/snakemake-github-action@v3
+      uses: snakemake/snakemake-github-action@v1
       with:
         directory: '.tests'
         snakefile: 'workflow/Snakefile'
