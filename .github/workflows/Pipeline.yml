@@ -8,5 +8,5 @@ jobs:
       - uses: snakemake/snakemake-github-action@v1
         with:
           directory: .tests
-          snakefile: ../Snakefile
+          snakefile: workflow/Snakefile
           args: "--use-conda --show-failed-logs -j 2 --conda-cleanup-pkgs"
