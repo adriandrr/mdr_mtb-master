@@ -7,6 +7,6 @@ jobs:
     steps:
       - uses: snakemake/snakemake-github-action@v1
         with:
-          directory: .tests
-          snakefile: workflow/Snakefile
+          directory: '.tests'
+          snakefile: 'workflow/Snakefile'
           args: "--use-conda --show-failed-logs -j 2 --conda-cleanup-pkgs"
