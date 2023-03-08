@@ -18,6 +18,16 @@ include: "rules/create_depth_profile.smk"
 include: "rules/create_html.smk"
 include: "rules/create_report.smk"
 
-rule all:
-    input:
-        "results/report.html"
+if config["reduced-analysis"] == False:
+    rule all:
+        input:
+            "results/report.html"
+
+if config["reduced-analysis"] == True:
+    rule all:
+        input:
+            expand(
+                "results/{reduce}/ABres/{sample}/DepthProfile_{sample}.csv",
+                reduce = get_read_reduction(),
+                sample = get_samples()
+            )
