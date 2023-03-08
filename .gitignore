@@ -4,7 +4,7 @@ results*
 logs/
 report.html
 backup/
-resources_self/
+genomes/
 .ipynb_checkpoints/
 geckodriver.log
 samples_*
@@ -13,3 +13,4 @@ test_altair.ipynb
 masterthesis_results
 tb-profiler
 .gitignore
+pointfinder_db
