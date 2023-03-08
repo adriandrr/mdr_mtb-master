@@ -24,6 +24,8 @@ rule index_genome:
         "resources/genomes/mtb-genome.fna",
     output:
         "resources/genomes/mtb-genome.fna.fai",
+    conda:
+        "../envs/samtools.yaml"
     shell:
         "samtools faidx {input} > {output}"
 
