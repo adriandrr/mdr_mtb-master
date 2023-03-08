@@ -1,4 +1,5 @@
 name: Pipeline Test
+run-name: Checking workflow process
 on: [push]
 
 jobs:

@@ -1,11 +1,8 @@
 import pandas as pd
 from os import path
 import csv
-import importlib.util
-spec = importlib.util.spec_from_file_location("codpos_genidx","workflow/scripts/codpos_genidx.py")
-cg = importlib.util.module_from_spec(spec)
-sys.modules["codpos_genidx"] = cg
-spec.loader.exec_module(cg)
+sys.path.append("workflow/scripts/")
+import codpos_genidx as cg
 
 configfile: "config/config.yaml"
 #orgdf = pd.read_csv("resources/validorgs.csv")

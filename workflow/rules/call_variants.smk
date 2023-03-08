@@ -2,6 +2,7 @@ rule call_region_variant:
 # The package freebayes is used to call mutations in the previously selected regions
     input:
         fna="resources/genomes/mtb-genome.fna",
+        fai="resources/genomes/mtb-genome.fna.fai",
         bam="results/{reduce}/mapped/{sample}.sorted.bam",
         bai="results/{reduce}/mapped/{sample}.sorted.bam.bai",
     output: 
