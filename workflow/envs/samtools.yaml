@@ -2,5 +2,6 @@ channels:
   - bioconda
   - conda-forge
 dependencies:
+  - libdeflate =1.13
   - htslib =1.17
   - samtools =1.16.1
