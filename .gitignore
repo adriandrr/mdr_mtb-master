@@ -4,7 +4,6 @@ results*
 logs/
 report.html
 backup/
-genomes/
 .ipynb_checkpoints/
 geckodriver.log
 samples_*
