@@ -12,5 +12,14 @@ test_altair.ipynb
 masterthesis_results
 tb-profiler
 .gitignore
-pointfinder_db_full
 genomes/
+campylobacter
+enterococcus_faecalis
+enterococcus_faecium
+escherichia_coli
+helicobacter_pylori
+klebsiella
+neisseria_gonorrhoeae
+plasmodium_falciparum
+salmonella
+staphylococcus_aureus

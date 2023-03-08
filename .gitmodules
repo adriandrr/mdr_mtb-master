@@ -1,0 +1,6 @@
+[submodule "mycobacterium_tuberculosis"]
+	path = mycobacterium_tuberculosis
+	url = https://bitbucket.org/genomicepidemiology/pointfinder_db/src/master/mycobacterium_tuberculosis/
+[submodule "resources/pointfinder_db"]
+	path = resources/pointfinder_db
+	url = https://bitbucket.org/genomicepidemiology/pointfinder_db/src/master/mycobacterium_tuberculosis/
