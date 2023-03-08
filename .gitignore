@@ -12,4 +12,5 @@ test_altair.ipynb
 masterthesis_results
 tb-profiler
 .gitignore
-pointfinder_db
+pointfinder_db_full
+genomes/
