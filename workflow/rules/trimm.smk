@@ -1,7 +1,7 @@
 rule cutadapt:
-# This rule is used to cut of residual adapters from the sequencing
+    # This rule is used to cut of residual adapters from the sequencing
     input:
-        get_fastqs
+        get_fastqs,
     output:
         fastq1=temp("results/trimmed/{sample}_R1.fastq"),
         fastq2=temp("results/trimmed/{sample}_R2.fastq"),
