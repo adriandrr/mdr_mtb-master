@@ -1,4 +1,4 @@
-name: Essential file check
+name: Check essential files
 run-name: Checking repository for essential files
 on: [push]
 

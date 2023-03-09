@@ -1,4 +1,4 @@
-name: Pipeline Test
+name: Test pipeline run
 run-name: Checking workflow process
 on: [push]
 

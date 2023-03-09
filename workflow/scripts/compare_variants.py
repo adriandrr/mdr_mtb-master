@@ -6,8 +6,8 @@ resdb = pd.read_csv(
     header=0,
     sep="\t",
 )
-resdb["PMID"]=resdb["PMID"].str.replace(",",";")
-resdb["Resistance"]=resdb["Resistance"].str.replace(",",";")
+resdb["PMID"] = resdb["PMID"].str.replace(",", ";")
+resdb["Resistance"] = resdb["Resistance"].str.replace(",", ";")
 sumvar = pd.read_csv(str(snakemake.input), header=0, sep="\t")
 stopdb = pd.read_csv(
     "resources/pointfinder_db/mycobacterium_tuberculosis/stop-overview.txt",
@@ -28,7 +28,8 @@ def Average(lst):
 
 with open(str(snakemake.output), "w") as outcsv:
     outcsv.writelines(
-        "Mut_status,Mut_gene,Genome_pos,Gene_pos,Codon_num,Codon_pos,Ref_Codon,Ref_aas,Alt_Codon,Alt_aas,Var_type,Read_depth,Alt_num,Var_Qual,Resistance,PMID\n")
+        "Mut_status,Mut_gene,Genome_pos,Gene_pos,Codon_num,Codon_pos,Ref_Codon,Ref_aas,Alt_Codon,Alt_aas,Var_type,Read_depth,Alt_num,Var_Qual,Resistance,PMID\n"
+    )
     for i in range(sumvar.shape[0]):
         lenlst = []
         res = ""
@@ -77,6 +78,7 @@ with open(str(snakemake.output), "w") as outcsv:
         for j in var_df["Alt_Codon"].values:
             if j in stopcodonlist:
                 res = var_df[
-                    (var_df["Gene_name"] == stopdb.loc[i][0]) & (var_df["Alt_Codon"] == j)
+                    (var_df["Gene_name"] == stopdb.loc[i][0])
+                    & (var_df["Alt_Codon"] == j)
                 ].to_string(header=False, index=False)
                 outcsv.write("res_mut,{}".format(res))
