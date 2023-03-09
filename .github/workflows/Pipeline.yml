@@ -7,23 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Test workflow
         uses: snakemake/snakemake-github-action@v1
         with:
           directory: '.tests'
           snakefile: 'workflow/Snakefile'
           args: "--use-conda --show-failed-logs -j 2 --conda-cleanup-pkgs"
-      - name: Setup miniconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          miniforge-variant: Mambaforge
-          channels: conda-forge
-          python-version: 3.9
-          activate-environment: pandas
-          environment-file: .tests/pandas.yml
-          use-mamba: true
+
+      - name: Set up Python environment
+        run: |
+          chmod +x setup-python-env.sh
+          ./setup-python-env.sh
+        shell: bash
+
       - name: Verify Antibiogramm
         run: |
-          ls
+          source env/bin/activate
           python .tests/check_result.py
