@@ -28,5 +28,5 @@ jobs:
 
     - name: Verify Antibiogramm
       run: |
-        python check_results.py
+        python check_result.py
       working-directory: .tests
