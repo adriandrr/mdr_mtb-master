@@ -7,7 +7,7 @@ row1 = df_res.loc[0,:].values.tolist()
 row2 = df_res.loc[1,:].values.tolist()
 
 # Verify the contents of the CSV file
-assert len(res) == 2  # Verify the number of rows
+assert len(df_res) == 2  # Verify the number of rows
 assert "rpoB" in row1
 assert "res_mut" in row1
 assert "RIFAMPICIN" in row1
