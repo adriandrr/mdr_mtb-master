@@ -15,11 +15,12 @@ jobs:
         snakefile: 'workflow/Snakefile'
         args: "--use-conda --show-failed-logs -j 2 --conda-cleanup-pkgs"
 
-    - name: Check result content
-      id: read_file
-      uses: andstor/file-reader-action@v1
-      with:
-        path: ".tests/results/summary/ABres/10_S40002reduced/ABres_10_S40002reduced.csv"
+    - name: Set result env
+      run: |
+        echo: "result=$(cat .tests/results/summary/ABres/10_S40002reduced/ABres_10_S40002reduced.csv)" >> $GITHUB_ENV
 
     - name: File contents
-      run: echo "${ steps.read_file.outputs.content }"
+      if: contains(env.result, 'RIFAMPICIN')
+      run: |
+        echo "found contained ABR"
+        echo "env.result"
