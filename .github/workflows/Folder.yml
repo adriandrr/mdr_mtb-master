@@ -1,9 +1,7 @@
-name: test-github-actions
+name: Essential file check
 run-name: Checking repository for essential files
-on:
-  push:
-    branches:
-      - main
+on: [push]
+
 jobs:
   Testing-folder-structure:
     runs-on: ubuntu-latest
@@ -15,9 +13,13 @@ jobs:
         id: check_files
         uses: andstor/file-existence-action@v2
         with:
-          files: "workflow/Snakefile, config/config.yaml, config/pep/samples.csv"
+          files: "workflow/Snakefile, 
+          resources/pointfinder_db/mycobacterium_tuberculosis/resistens-overview.txt,
+          resources/gene_loci.csv, 
+          config/config.yaml, 
+          config/pep/samples.csv"
 
-      - name: File exists
+      - name: Files exists
         if: steps.check_files.outputs.files_exists == 'true'
         run: echo All files exists!
       

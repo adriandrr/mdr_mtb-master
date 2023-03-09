@@ -7,9 +7,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
     - name: Test workflow
       uses: snakemake/snakemake-github-action@v1
       with:
         directory: '.tests'
         snakefile: 'workflow/Snakefile'
         args: "--use-conda --show-failed-logs -j 2 --conda-cleanup-pkgs"
+
+    - name: Check result content
+      id: read_file
+      uses: andstor/file-reader-action@v1
+      with:
+        path: ".tests/results/summary/ABres/10_S40002reduced/ABres_10_S40002reduced.csv"
+
+    - name: File contents
+      run: echo "${ steps.read_file.outputs.content }"
