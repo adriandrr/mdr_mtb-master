@@ -29,4 +29,4 @@ jobs:
     - name: Verify Antibiogramm
       run: |
         python check_results.py
-      working-directory: .tests/results/summary/ABres/10_S40002reduced
+      working-directory: .tests
