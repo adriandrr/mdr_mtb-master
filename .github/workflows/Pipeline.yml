@@ -23,5 +23,5 @@ jobs:
 
       - name: Verify Antibiogramm
         run: |
-          source .tests/env/bin/activate
+          source .tests/venv/bin/activate
           python .tests/check_result.py
