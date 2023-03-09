@@ -7,4 +7,4 @@ python3 -m venv .tests/venv
 source .tests/venv/bin/activate
 
 # Install the required packages
-pip install -r requirements.txt
+pip install -r .tests/requirements.txt
