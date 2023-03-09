@@ -1,9 +1,6 @@
-name: Check Formatting and Linting
-
-on:
-  push:
-    branches:
-      - main
+name: Check formatting and Linting
+run-name: Check formatting and linting
+on: [push]
 
 jobs:
   Formatting:
