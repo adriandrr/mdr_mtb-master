@@ -15,12 +15,18 @@ jobs:
         snakefile: 'workflow/Snakefile'
         args: "--use-conda --show-failed-logs -j 2 --conda-cleanup-pkgs"
 
-    - name: Set result env
-      run: |
-        echo: "result=$(cat .tests/results/summary/ABres/10_S40002reduced/ABres_10_S40002reduced.csv)" >> $GITHUB_ENV
+    - name: Setup miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        miniforge-variant: Mambaforge
+        channels: conda-forge
+        python-version: 3.9
+        activate-environment: pandas
+        environment-file: .tests/pandas.yml
+        use-mamba: true
 
-    - name: File contents
-      if: contains(env.result, 'RIFAMPICIN')
+    - name: Verify Antibiogramm
       run: |
-        echo "found contained ABR"
-        echo "env.result"
+        python check_results.py
+      working-directory: .tests/results/summary/ABres/10_S40002reduced/ABres_10_S40002reduced.csv
