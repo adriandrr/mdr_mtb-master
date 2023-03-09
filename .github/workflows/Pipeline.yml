@@ -17,7 +17,7 @@ jobs:
 
       - name: Set up Python environment
         run: |
-          chmod +x setup-python-env.sh
+          chmod +x .tests/setup-python-env.sh
           ./setup-python-env.sh
         shell: bash
 
