@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python environment
         run: |
           chmod +x .tests/setup-python-env.sh
-          ./setup-python-env.sh
+          ./tests/setup-python-env.sh
         shell: bash
 
       - name: Verify Antibiogramm
