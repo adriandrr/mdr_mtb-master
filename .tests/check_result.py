@@ -1,7 +1,7 @@
 import pandas as pd
 import csv
 
-df_res = pd.read_csv(".test/results/summary/ABres/10_S40002reduced/ABres_10_S40002reduced.csv",header=0,sep=",")
+df_res = pd.read_csv(".tests/results/summary/ABres/10_S40002reduced/ABres_10_S40002reduced.csv",header=0,sep=",")
 
 row1 = df_res.loc[0,:].values.tolist()
 row2 = df_res.loc[1,:].values.tolist()
