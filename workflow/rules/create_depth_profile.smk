@@ -33,3 +33,17 @@ rule integrate_resistances:
         "logs/{reduce}/depthprofile_with_res/{sample}.log",
     script:
         "../scripts/integr_res.py"
+
+rule sum_resistances:
+    input:
+        expand(
+            "results/{reduce}/ABres/{sample}/ABres_{sample}.csv",
+            reduce = get_read_reduction(),
+            sample = get_samples()
+        )
+    output:
+        "results/summed_resistances.csv"
+    conda:
+        "../envs/pandas.yaml"
+    script:
+        "../scripts/sum_res.py"
