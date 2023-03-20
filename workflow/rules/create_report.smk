@@ -12,6 +12,7 @@ if config["reduce_reads"]["reducing"] == False:
             expand(
                 "results/html/{sample}_coverage_summary.html", sample=get_samples(),
             ),
+            "results/html/summed_resistances.html"
         output:
             "results/report.html",
         conda:

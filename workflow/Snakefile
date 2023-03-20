@@ -7,6 +7,8 @@ configfile: "config/config.yaml"
 
 pepfile: config["pepfile"]
 
+report: "report/workflow.rst"
+
 include: "rules/common.smk"
 include: "rules/qc.smk"
 include: "rules/trimm.smk"

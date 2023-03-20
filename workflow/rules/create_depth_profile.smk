@@ -42,8 +42,10 @@ rule sum_resistances:
             sample = get_samples()
         )
     output:
-        "results/summed_resistances.csv"
+        "results/{reduce}/summed_resistances.csv"
     conda:
         "../envs/pandas.yaml"
+    log:
+        "logs/{reduce}/summary/summing_resistances/sum.log"
     script:
         "../scripts/sum_res.py"

@@ -51,12 +51,29 @@ elif config["reduce_reads"]["reducing"] == True:
         conda:
             "../envs/altair.yaml"
         log:
-            "logs/{reduce}/report/{sample}_plot-to-report",
+            "logs/{reduce}/report/{sample}_plot-to-report.log",
         params:
             "{sample}",
         script:
             "../scripts/altair_plot_list.py"
 
+
+rule summed_resistances_to_report:
+    input:
+        expand("results/{reduce}/summed_resistances.csv",
+        reduce=get_read_reduction(),
+        )
+    output:
+        report("results/html/summed_resistances.html",
+        caption="../report/resistance.rst",
+        category="summed plot"
+        )
+    conda:
+        "../envs/altair.yaml"
+    log:
+        "logs/report/summed-resistance.log"
+    script:
+        "../scripts/altair_summary.py"
 
 rule coverage_sum_to_report:
     # This rule gathers information from the results file and creates a summarising plot
