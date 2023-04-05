@@ -73,6 +73,27 @@ with open(str(snakemake.output), "w") as outcsv:
                 else:
                     continue
 
+            gene_df = gene_df[gene_df["Codon_pos"] < 0]
+            index = sumvar.loc[i][4] - 1
+            for j in gene_df["Codon_pos"].unique():
+                if int(j) == int(sumvar.loc[i][2]):
+                    ref_cod = list(sumvar.loc[i][5])
+                    alt_cod = list(sumvar.loc[i][7])
+                    ref_cod.reverse()
+                    alt_cod.reverse()
+                    complist = [ref_cod[index],alt_cod[index]]
+                    hit_df = gene_df.loc[gene_df["Codon_pos"] == int(sumvar.loc[i][2])]
+                    mutlist = list(hit_df.loc[:,"Ref_codon":"Res_codon"].values)[0]
+                    print(complist,mutlist)
+                    for elem in sumvar.loc[i,].tolist():
+                        res += str(elem)+"," 
+                    if mutlist[0] == complist[0] and complist[1] in list(mutlist[1]):
+                        for elem in hit_df.loc[:,"Resistance":"PMID"].values[0]:
+                            res += str(elem)+"," 
+                        outcsv.write("res_mut,{}\n".format(res.rstrip(",")))
+                    else:
+                        outcsv.write("no_res_mut,{},-,-\n".format(res.rstrip(",")))
+
     for i in range(stopdb.shape[0]):
         var_df = sumvar.loc[sumvar["Gene_name"] == stopdb.loc[i][0]]
         for j in var_df["Alt_Codon"].values:
