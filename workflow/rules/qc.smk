@@ -76,6 +76,7 @@ rule samtools_depth:
         region=lambda wildcards: get_region(wildcards.loci),
     log:
         "logs/{reduce}/qc/samtools/depth/{sample}_{loci}.log",
+    threads: 32
     shell:
         "samtools depth -H -d 1000000 -r {params.region} -o {output} {input.bam}"
 
@@ -93,6 +94,7 @@ rule samtools_coverage:
         region=lambda wildcards: get_region(wildcards.loci),
     log:
         "logs/{reduce}/qc/samtools/coverage/{sample}_{loci}.log",
+    threads: 32
     shell:
         "(samtools coverage -r {params.region} -o {output} {input.bam} &&"
         " sed -i 's/AL123456.3/{wildcards.loci}/' {output})"

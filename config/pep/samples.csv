@@ -1,2 +1,6 @@
 sample_name,fq1,fq2,date
+1_S1,data/1_S1_R1_001.fastq.gz,data/1_S1_R2_001.fastq.gz,2022-06-01
+3_S3,data/3_S3_R1_001.fastq.gz,data/3_S3_R2_001.fastq.gz,2022-06-01
 10_S40002reduced,data/10_S40002reduced_R1.fastq.gz,data/10_S40002reduced_R2.fastq.gz,2022-06-01
+10_S4,data/10_S4_R1_001.fastq.gz,data/10_S4_R2_001.fastq.gz,2022-06-01
+743_S39,data/743_S39_R1_001.fastq.gz,data/743_S39_R2_001.fastq.gz,2022-06-01

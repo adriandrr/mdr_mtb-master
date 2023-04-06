@@ -12,12 +12,13 @@ if config["reduce_reads"]["reducing"] == False:
             expand(
                 "results/html/{sample}_coverage_summary.html", sample=get_samples(),
             ),
+            "results/html/summed_resistances.html"
         output:
             "results/report.html",
         conda:
-            "../envs/unix.yaml"
+            "../envs/snakemake.yaml"
         log:
-            "logs/report/eport.log",
+            "logs/report/report.log",
         shell:
             "snakemake --nolock --report {output}"
 
@@ -38,6 +39,8 @@ if config["reduce_reads"]["reducing"] == True:
             ),
         output:
             "results/report.html",
+        conda:
+            "../envs/snakemake.yaml"
         log:
             "logs/report/plot-to-report.log",
         shell:
