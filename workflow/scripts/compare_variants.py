@@ -79,8 +79,8 @@ with open(str(snakemake.output), "w") as outcsv:
             for j in gene_df["Codon_pos"].unique():
                 if int(j) == int(sumvar.loc[i][comp]):
                     complist,mutlist,hit_df = create_compare_lists(comp, sumvar, gene_df)
-                    res = prepare_output(i,sumvar) 
-                    if mutlist[0] == complist[0] and mutlist[1] == complist[1] and complist[2] in list(mutlist[2]):
+                    res = prepare_output(i,sumvar)
+                    if mutlist[0] == complist[0] and complist[1] in list(mutlist[1]):
                         process_res_mut("res", hit_df, res)
                     else:
                         process_res_mut("no_res", hit_df, res)

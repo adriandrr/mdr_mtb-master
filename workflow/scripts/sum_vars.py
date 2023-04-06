@@ -56,7 +56,6 @@ with open(str(snakemake.output), "w") as outcsv, open(
             for elem in line:
                 res += str(elem) + "\t"
             if len(recs.INFO["TYPE"]) == 1 and recs.INFO["TYPE"][0] == "snp":
-                print(line)
                 outcsv.write(res[:-1] + "\n")
             else:
                 outcsv2.write(res[:-1] + "\n")
