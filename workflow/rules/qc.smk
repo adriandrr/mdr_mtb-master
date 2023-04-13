@@ -7,6 +7,7 @@ rule fastqc:
         zip="results/qc/fastqc/{sample}_fastqc.zip",
     log:
         "logs/qc/fastqc/{sample}.log",
+    threads: 4
     wrapper:
         "v1.14.1/bio/fastqc"
 
@@ -26,6 +27,7 @@ rule multiqc:
         ),
     log:
         "logs/qc/multiqc.log",
+    threads: 4
     wrapper:
         "v1.14.1/bio/multiqc"
 
@@ -40,6 +42,7 @@ rule fastqc_after_trim:
         zip="results/qc/trimmed/fastqc/{sample}_fastqc.zip",
     log:
         "logs/qc/trimmed/fastqc/{sample}.log",
+    threads: 4
     wrapper:
         "v1.14.1/bio/fastqc"
 
@@ -59,6 +62,7 @@ rule multiqc_after_trim:
         ),
     log:
         "logs/qc/trimmed/multiqc.log",
+    threads: 4
     wrapper:
         "v1.14.1/bio/multiqc"
 
@@ -76,7 +80,6 @@ rule samtools_depth:
         region=lambda wildcards: get_region(wildcards.loci),
     log:
         "logs/{reduce}/qc/samtools/depth/{sample}_{loci}.log",
-    threads: 32
     shell:
         "samtools depth -H -d 1000000 -r {params.region} -o {output} {input.bam}"
 
@@ -94,7 +97,6 @@ rule samtools_coverage:
         region=lambda wildcards: get_region(wildcards.loci),
     log:
         "logs/{reduce}/qc/samtools/coverage/{sample}_{loci}.log",
-    threads: 32
     shell:
         "(samtools coverage -r {params.region} -o {output} {input.bam} &&"
         " sed -i 's/AL123456.3/{wildcards.loci}/' {output})"

@@ -20,7 +20,7 @@ if config["reduce_reads"]["reducing"] == False:
         log:
             "logs/report/report.log",
         shell:
-            "snakemake --nolock --report {output}"
+            "snakemake --nolock --report {output} --report-stylesheet resources/custom-stylesheet.css"
 
 
 if config["reduce_reads"]["reducing"] == True:

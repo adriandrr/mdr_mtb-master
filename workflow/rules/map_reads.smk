@@ -52,6 +52,7 @@ rule bwa_index:
         prefix=lambda w, output: get_bwa_index_prefix(output),
     log:
         "logs/bwa-index/mtb-genome.log",
+    threads: 4
     wrapper:
         "v1.14.1/bio/bwa/index"
 
@@ -75,7 +76,7 @@ rule map_reads:
         extra="",
         sort="samtools",
         sort_order="coordinate",
-    threads: 8
+    threads: 4
     wrapper:
         "v1.14.1/bio/bwa/mem"
 
@@ -93,7 +94,7 @@ if not config["reduce_reads"]["reducing"]:
             "logs/{reduce}/samtools/{sample}.log",
         params:
             extra="-m 4G",
-        threads: 8
+        threads: 4
         wrapper:
             "v1.14.1/bio/samtools/sort"
 

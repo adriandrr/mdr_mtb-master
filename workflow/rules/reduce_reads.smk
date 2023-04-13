@@ -13,7 +13,7 @@ if config["reduce_reads"]["reducing"]:
             "logs/samtools/{sample}.log",
         params:
             extra="-m 4G",
-        threads: 8
+        threads: 4
         wrapper:
             "v1.14.1/bio/samtools/sort"
 

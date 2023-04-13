@@ -17,6 +17,8 @@ if config["reduce_reads"]["reducing"] == False:
                 "results/html/{sample}_resistance-coverage.html",
                 caption="../report/resistance.rst",
                 category="Resistance plot",
+                subcategory="{sample}",
+                labels={"sample":"{sample}"+" resistances"}
             ),
         conda:
             "../envs/altair.yaml"
@@ -47,6 +49,8 @@ elif config["reduce_reads"]["reducing"] == True:
                 "results/html/{sample}_resistance-coverage.svg",
                 caption="../report/resistance.rst",
                 category="Resistance plot",
+                subcategory="{sample}",
+                labels={"sample":"{sample}"+" resistances"}
             ),
         conda:
             "../envs/altair.yaml"
@@ -66,7 +70,8 @@ rule summed_resistances_to_report:
     output:
         report("results/html/summed_resistances.html",
         caption="../report/resistance.rst",
-        category="summed plot"
+        category="Summed resistances",
+        labels={"sample":"summed resistances"}
         )
     conda:
         "../envs/altair.yaml"
@@ -87,6 +92,8 @@ rule coverage_sum_to_report:
             "results/html/{sample}_coverage_summary.html",
             caption="../report/coverage.rst",
             category="Loci coverage details",
+            subcategory="{sample}",
+            labels={"sample":"{sample}"+" coverage"}
         ),
     conda:
         "../envs/pandas.yaml"
