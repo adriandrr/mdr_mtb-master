@@ -1,16 +1,21 @@
-rule cutadapt:
+rule fastp_pe:
     # This rule is used to cut of residual adapters from the sequencing
     input:
-        get_fastqs,
+        sample=get_fastqs
     output:
-        fastq1=temp("results/trimmed/{sample}_R1.fastq"),
-        fastq2=temp("results/trimmed/{sample}_R2.fastq"),
-        qc=temp("results/qc/trimmed/cutadapt/{sample}.qc.txt"),
+        trimmed=temp(["results/trimmed/{sample}_R1.fastq","results/trimmed/{sample}_R2.fastq"]),
+        html="results/trimmed/{sample}.html",
+        json="results/trimmed/{sample}.fastp.json",
     params:
         adapters=config["illumina_adapters"],
-        extra="--minimum-length 1 -q 15",
+        extra="--qualified_quality_phred {} ".format(
+            config["minimum-quality"]["min-PHRED"]
+        )
+        + "--length_required {}".format(
+            config["minimum-quality"]["min-Length"]
+        ),
     log:
-        "logs/cutadapt/{sample}.log",
-    threads: 4
+        "logs/fastp/{sample}.log",
+    threads: 2
     wrapper:
-        "v1.14.1/bio/cutadapt/pe"
+        "v1.25.0/bio/fastp"

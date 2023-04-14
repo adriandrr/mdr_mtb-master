@@ -60,8 +60,20 @@ elif config["reduce_reads"]["reducing"] == True:
             "{sample}",
         script:
             "../scripts/altair_plot_list.py"
-
-
+"""
+rule gene_loci_to_report:
+    input:
+       incsv="resources/gene_loci.csv"
+    output:
+        outcsv=report("results/html/gene_loci.html",
+        caption="../report/resistance.rst",
+        category="gene_loci"
+        )
+    conda:
+        "../envs/rbt.yaml"
+    shell:
+        "csvtotable {input.incsv} {output.outcsv}"
+"""
 rule summed_resistances_to_report:
     input:
         expand("results/{reduce}/summed_resistances.csv",

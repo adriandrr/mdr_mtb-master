@@ -6,6 +6,7 @@ if config["reduce_reads"]["reducing"] == False:
         input:
             "results/qc/multiqc/multiqc.html",
             "results/qc/trimmed/multiqc/multiqc.html",
+            #"results/html/gene_loci.html",
             expand(
                 "results/html/{sample}_resistance-coverage.html", sample=get_samples(),
             ),
