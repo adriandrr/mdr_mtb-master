@@ -4,20 +4,18 @@ if config["reduce_reads"]["reducing"] == False:
     rule report_no_reduce:
         # The concluding rule which is therefore be called in the rule_all creating the final report
         input:
-            "results/qc/multiqc/multiqc.html",
-            "results/qc/trimmed/multiqc/multiqc.html",
-            #"results/html/gene_loci.html",
+            "results/qc/multiqc.html",
+            "results/html/summed_resistances.html",
             expand(
                 "results/html/{sample}_resistance-coverage.html", sample=get_samples(),
             ),
             expand(
                 "results/html/{sample}_coverage_summary.html", sample=get_samples(),
             ),
-            "results/html/summed_resistances.html"
         output:
             "results/report.html",
         conda:
-            "../envs/snakemake.yaml"
+            "../envs/snakemake.yaml",
         log:
             "logs/report/report.log",
         shell:
@@ -30,8 +28,7 @@ if config["reduce_reads"]["reducing"] == True:
     rule report_reduce:
         # The concluding rule which is therefore be called in the rule_all creating the final report
         input:
-            "results/qc/multiqc/multiqc.html",
-            "results/qc/trimmed/multiqc/multiqc.html",
+            #"results/qc/multiqc.html",
             expand(
                 "results/html/{sample}_resistance-coverage.svg", sample=get_samples(),
             ),

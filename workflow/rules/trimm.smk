@@ -18,4 +18,4 @@ rule fastp_pe:
         "logs/fastp/{sample}.log",
     threads: 2
     wrapper:
-        "v1.25.0/bio/fastp"
+        "v1.31.1/bio/fastp"

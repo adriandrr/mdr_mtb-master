@@ -30,6 +30,16 @@ def get_gene_loci():
     gene_pos = pd.read_csv("resources/gene_loci.csv", header=0)
     return gene_pos["gene"].tolist()
 
+def expand_samples(paths, **kwargs):
+    def inner(wildcards):
+        return expand(
+            paths,
+            sample=get_samples(),
+            **kwargs,
+        )
+
+    return inner
+
 
 def get_gene_coordinates():
     gene_coordinate_dict = {}

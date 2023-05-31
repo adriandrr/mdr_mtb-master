@@ -29,7 +29,5 @@ if config["reduced-analysis"] == True:
     rule all:
         input:
             expand(
-                "results/{reduce}/ABres/{sample}/DepthProfile_{sample}.csv",
-                reduce = get_read_reduction(),
-                sample = get_samples()
+                "results/report.html"
             )

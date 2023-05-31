@@ -1,45 +1,11 @@
 rule fastqc:
-    # The first applied rule, it performs a fastqc analysis with the given fastq input files
-    input:
-        get_fastqs,
-    output:
-        html="results/qc/fastqc/{sample}.html",
-        zip="results/qc/fastqc/{sample}_fastqc.zip",
-    log:
-        "logs/qc/fastqc/{sample}.log",
-    threads: 4
-    wrapper:
-        "v1.14.1/bio/fastqc"
-
-
-rule multiqc:
-    # This rule performs a multiqc analysis with the given fastq input files, summarising fastqc results
-    input:
-        expand(
-            "results/qc/fastqc/{sample}_fastqc.zip", sample=get_samples(),
-        ),
-    output:
-        report(
-            "results/qc/multiqc/multiqc.html",
-            caption="../report/multiqc.rst",
-            category="MultiQC",
-            subcategory="Before trimming",
-        ),
-    log:
-        "logs/qc/multiqc.log",
-    threads: 4
-    wrapper:
-        "v1.14.1/bio/multiqc"
-
-
-rule fastqc_after_trim:
     # This rule performs a fastqc analysis with the given fastq input files after trimming
     input:
         "results/trimmed/{sample}_R1.fastq",
         "results/trimmed/{sample}_R2.fastq",
     output:
-        html="results/qc/trimmed/fastqc/{sample}.html",
-        zip="results/qc/trimmed/fastqc/{sample}_fastqc.zip",
+        html=temp("results/qc/trimmed/fastqc/{sample}.html"),
+        zip=temp("results/qc/trimmed/fastqc/{sample}_fastqc.zip"),
     log:
         "logs/qc/trimmed/fastqc/{sample}.log",
     threads: 4
@@ -47,22 +13,28 @@ rule fastqc_after_trim:
         "v1.14.1/bio/fastqc"
 
 
-rule multiqc_after_trim:
+rule multiqc:
     # This rule performs a multiqc analysis with the given fastq input files after trimming, summarising fastqc results
     input:
-        expand(
-            "results/qc/trimmed/fastqc/{sample}_fastqc.zip", sample=get_samples(),
+        expand_samples(
+            [
+            "results/qc/trimmed/fastqc/{sample}_fastqc.zip",
+            "results/trimmed/{sample}.fastp.json",
+            ]
         ),
     output:
         report(
-            "results/qc/trimmed/multiqc/multiqc.html",
-            caption="../report/multiqc.rst",
+            "results/qc/multiqc.html",
             category="MultiQC",
             subcategory="After trimming",
         ),
-    log:
-        "logs/qc/trimmed/multiqc.log",
+    #log:
+    #    "logs/qc/trimmed/multiqc.log",
     threads: 4
+    params:
+        extra=(
+            "--config config/multiqc_config.yaml"
+        ),    
     wrapper:
         "v1.14.1/bio/multiqc"
 
