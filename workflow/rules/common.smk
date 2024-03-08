@@ -4,6 +4,8 @@ import pathlib
 import csv
 
 sys.path.append("workflow/scripts")
+df_path = "config/pep/sample_info.txt"
+samples_df = pd.read_csv(df_path)
 import codpos_genidx as cg
 
 
@@ -11,10 +13,13 @@ configfile: "config/config.yaml"
 
 
 def get_samples():
-    return list(pep.sample_table["sample_name"].values)
+    if config["sequencing"] == "illumina":    
+        return list(pep.sample_table["sample_name"].values)
+    if config["sequencing"] == "ont":
+        names = samples_df["names"]
+        return names.tolist()
 
-
-def get_fastqs(wildcards):
+def get_illumina_fastqs(wildcards):
     return pep.sample_table.loc[wildcards.sample][["fq1", "fq2"]]
 
 
@@ -52,14 +57,6 @@ def get_region(locus):
 
 def get_bwa_index_prefix(index_paths):
     return os.path.splitext(index_paths[0])[0]
-
-
-def get_read_reduction():
-    if config["reduce_reads"]["reducing"] == True:
-        return config["reduce_reads"]["parameters"]
-    if config["reduce_reads"]["reducing"] == False:
-        return ["summary"]
-
 
 wildcard_constraints:
     sample="[^/.]+",

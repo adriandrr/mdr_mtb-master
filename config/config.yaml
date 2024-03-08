@@ -1,5 +1,7 @@
 pepfile: config/pep/config.yaml
 
+sequencing: "ont" # "ont" or "illumina"
+samtools_q_flag: 10
 gene_loc: "/resources/gene_loci.csv"
 
 mtb-genome-download-path:
@@ -16,7 +18,3 @@ preprocessing:
   amplicon-ref-ver: "AL123456.3"
 
 reduced-analysis: False
-
-reduce_reads:
-  reducing: False # should the reads be reduced -> True; if not so -> False
-  parameters: [0,10,20,30,40,50,60,70,80,90] # how many reads should be reduced in percent
