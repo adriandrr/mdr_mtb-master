@@ -36,7 +36,7 @@ rule multiqc_after_fastp:
     output:
         report(
             "results/qc/trimmed/multiqc/multiqc.html",
-            caption="../report/multiqc.rst",
+            caption="../../report/multiqc.rst",
             category="MultiQC",
             subcategory="After trimming",
         ),

@@ -88,6 +88,7 @@ rule samtools_summary_ont:
     log:
         "logs/qc/samtools/summary/{sample}.log",
     shell:
-        "cat {input} >> {output} ; "
-        "echo -ne '\n' >> {output} ; "
-        "sed -i '1!{{/^#rname/d;}}' {output}"
+        "cat {input} > {output}.tmp ; "
+        "echo -ne '\n' >> {output}.tmp ; "
+        "sed '1!{{/^#rname/d;}}' {output}.tmp > {output} ; "
+        "rm {output}.tmp"
