@@ -5,7 +5,6 @@ import pandas as pd
 path_list = list(snakemake.input[0:])
 genenames = list(snakemake.params)
 outfile = str(snakemake.output)
-
 with open(str(snakemake.output), "w+") as outcsv:
     if len(outcsv.readlines()) == 0:
         outcsv.write("Gene,Position,Depth,Mutation,Antibiotic\n")

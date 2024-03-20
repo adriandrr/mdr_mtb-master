@@ -4,5 +4,5 @@ channels:
 dependencies:
   - fastp=0.20.1
   - minimap2=2.22
-  - samtools=1.19
+  - samtools
   - pandas

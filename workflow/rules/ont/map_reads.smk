@@ -24,7 +24,7 @@ rule samtools_samtobam:
     conda:
         "../../envs/analysis_env.yaml"
     shell:
-        "samtools view -bS {input} | samtools sort -o {output}"
+        "samtools view -bS {input} | samtools sort > {output}"
         
 rule samtools_index_ont:
     input:
@@ -51,7 +51,7 @@ rule samtools_depth_ont:
     params:
         region=lambda wildcards: get_region(wildcards.loci),    
     shell:
-        "samtools depth -a -d 0 -r {params.region} {input.bam_file} -o {output}"
+        "samtools depth -a -d 0 {input.bam_file} -r {params.region} > {output}"
 
 rule samtools_coverage_ont:
     # Here, a summarising file is created with information about the coverage from a locus of a sample
@@ -68,7 +68,7 @@ rule samtools_coverage_ont:
         "logs/qc/samtools/coverage/{sample}_{loci}.log",
     threads: 32
     shell:
-        "(samtools coverage -r {params.region} -o - {input.bam} | sed 's/AL123456.3/{wildcards.loci}/' > {output})"
+        "samtools coverage {input.bam} -r {params.region} | sed 's/AL123456.3/{wildcards.loci}/' > {output}"
 
 
 rule samtools_summary_ont:

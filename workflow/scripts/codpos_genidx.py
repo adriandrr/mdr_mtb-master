@@ -5,7 +5,6 @@ import pandas as pd
 
 gene_pos = pd.read_csv("resources/gene_loci.csv", header=0, index_col=0)
 
-
 def main(pos):
     parser = argparse.ArgumentParser(
         description="Enter genome position and retrieve gene, codon number and codon position"
@@ -14,96 +13,42 @@ def main(pos):
     pos = parser.parse_args(pos)
     genomeidx_to_gene(pos.position)
 
-
-# genomeidx_to_gene takes genome position as argument and iterates through pandas list
-# of genes and respective coordinates (not really effective). When a range of coordinates where
-# the given argument is in between is found, the gene is returned together with the output
-# of another function which gives [Codonnumber, Position in gene, Position in Codon] a output.
-
+# genomeidx_to_gene iterates through genes and coordinates to find the gene containing 
+# the given genome position. It returns the gene and associated codon information.
 
 def genomeidx_to_gene(genomeidx):
-    notfound = 0
-    i = 0
-    while notfound == 0:
-        gene = gene_pos.index[i]
-        if (
-            int(find_gene_coords(gene)[0])
-            <= genomeidx
-            <= int(find_gene_coords(gene)[1])
-        ):
-            notfound = 1
-            # print([genomeidx_and_gene_to_codon(genomeidx, gene),gene])
+    for gene, coords in gene_pos.iterrows():
+        start, end = map(int, coords[0].replace("c", "").split("-"))
+        if start <= genomeidx <= end or end <= genomeidx <= start:
             return [genomeidx_and_gene_to_codon(genomeidx, gene), gene]
-            break
-        else:
-            i = i + 1
-            continue
 
-
-# find_gene_coords takes the gene name as input and returns
-# the correct order of start and end coordinate
-# The entry in the genedatabase has to be configured like this:
-# eis,c2715332-2714124
-# the "c" defines if it is a complement (e.g. "reverse") gene
-
-
-def find_gene_coords(gene):
-    coordlist = []
-    coords = gene_pos.loc[gene].values[0]
-    if "c" in coords:
-        coords = coords.replace("c", "")
-        coordlist.append(coords.split("-")[1])
-        coordlist.append(coords.split("-")[0])
-    else:
-        coordlist.append(coords.split("-")[0])
-        coordlist.append(coords.split("-")[1])
-    coordlist = [int(x) for x in coordlist]
-    return coordlist
-
-
-# is_gene_complement takes the gene name as input and returns True for a complement gene
-# and false if not so
-
-
-def is_gene_complement(gene):
-    if "c" in gene_pos.loc[gene].values[0]:
-        return True
-    else:
-        return False
-
-
-# genomeidx_and_gene_to_codon takes the initial given genome position and the retrieved gene
-# as input and converts this information to the codon number in the gene together with the
-# actual position in the gene and in the codon
-
+# genomeidx_and_gene_to_codon converts genome position and gene into codon details:
+# codon number, position in gene, and position in codon.
 
 def genomeidx_and_gene_to_codon(genomeidx, gene):
     promdiff = 0
-    if "promoter" in str(gene):
-        promdiff = int(re.search(r"size_(.*?)bp", str(gene)).group(1))
-    if is_gene_complement(gene) == True:
-        START = find_gene_coords(gene)[1]
-        POSITION = START - genomeidx - promdiff
-        if POSITION < 0:
-            POSITION -= 1
-        if POSITION % 3 == 0:
-            return [int((POSITION / 3)) + 1, POSITION + 1, 3]
-        elif POSITION % 3 == 1:
-            return [int(((POSITION - 1) / 3)) + 1, POSITION + 1, 2]
-        elif POSITION % 3 == 2:
-            return [int(((POSITION - 2) / 3)) + 1, POSITION + 1, 1]
-    elif is_gene_complement(gene) == False:
-        START = find_gene_coords(gene)[0]
-        POSITION = genomeidx - START - promdiff
-        if POSITION < 0:
-            POSITION -= 1
-        if POSITION % 3 == 0:
-            return [int((POSITION / 3)) + 1, POSITION + 1, 1]
-        elif POSITION % 3 == 1:
-            return [int(((POSITION - 1) / 3)) + 1, POSITION + 1, 2]
-        elif POSITION % 3 == 2:
-            return [int(((POSITION - 2) / 3)) + 1, POSITION + 1, 3]
+    if "promoter" in gene:
+        promdiff = int(re.search(r"size_(.*?)bp", gene).group(1))
+    start, end = find_gene_coords(gene)
+    is_complement = is_gene_complement(gene)
+    position = end - genomeidx - promdiff if is_complement else genomeidx - start - promdiff
+    position -= 1 if position < 0 else 0
+    codon_position = (position % 3) + 1
+    codon_index = int((position - codon_position + 3) / 3) + 1
+    codon_position = abs(codon_position - 4) if is_complement else codon_position
+    return [codon_index, position + 1, codon_position]
 
+# find_gene_coords returns the correct order of start and end coordinates for a given gene.
+
+def find_gene_coords(gene):
+    coords = gene_pos.loc[gene].values[0]
+    start, end = map(int, coords.replace("c", "").split("-"))
+    return [end, start] if "c" in coords else [start, end]
+
+# is_gene_complement returns True if the gene is a complement gene, False otherwise.
+
+def is_gene_complement(gene):
+    return "c" in gene_pos.loc[gene].values[0]
 
 if __name__ == "__main__":
     main(sys.argv[1:])

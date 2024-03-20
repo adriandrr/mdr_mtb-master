@@ -8,7 +8,7 @@ rule create_report:
             expand(
                 "results/html/{sample}_coverage_summary.html", sample=get_samples(),
             ),
-            "results/html/summed_resistances.html"
+            "results/html/resistances_causing_mutations.html"
         output:
             "results/report.html",
         conda:

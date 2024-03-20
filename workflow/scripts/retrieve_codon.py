@@ -1,67 +1,49 @@
 from Bio import SeqIO
 from Bio.Seq import Seq
-import codpos_genidx as cg
-
-# The refcodinfo_to_codon function takes the reference genome position
-# together with the Codon-position of the mutation and utilizes SeqIo
-# to retrieve the full Codon in the correct reading frame
+import pandas as pd
 
 genome = "resources/genomes/mtb-genome.fna"
+gene_pos = pd.read_csv("resources/gene_loci.csv", header=0, index_col=0)
 record = SeqIO.read(genome, "fasta")
 
-# This function distinguishes between complement and not complement variants
-# The given codon will be complemented accordingly
+# Retrieves the full codon at the given genome position and mutation codon position.
+# Handles complement and non-complement variants accordingly.
 
-
-def refcodinfo_to_codon(Genome_position, Codon_position, Gene):
-    genpos = Genome_position
-    codpos = Codon_position
-    gene = Gene
-    if cg.is_gene_complement(gene) == False:
-        if codpos == 1:
-            return record.seq[genpos - 1 : genpos + 2]
-        if codpos == 2:
-            return record.seq[genpos - 2 : genpos + 1]
-        if codpos == 3:
-            return record.seq[genpos - 3 : genpos]
-    elif cg.is_gene_complement(gene) == True:
-        if codpos == 1:
-            return record.seq[genpos - 1 : genpos + 2].reverse_complement()
-        if codpos == 2:
-            return record.seq[genpos - 2 : genpos + 1].reverse_complement()
-        if codpos == 3:
-            return record.seq[genpos - 3 : genpos].reverse_complement()
+def refcodinfo_to_codon(genome_position, codon_position, gene):
+    genpos = genome_position
+    codpos = codon_position
+    is_complement = is_gene_complement(gene)
+    if is_complement == False:
+            return record.seq[genpos - codpos : genpos + 3 - codpos]
+    elif is_complement == True:
+        return record.seq[genpos - 1 : genpos + 2].reverse_complement()
     else:
         raise ValueError("gene could not be found")
 
+# Converts a codon considering the mutation position.
+# Handles complement and non-complement variants accordingly.
 
-# This function distinguishes between complement and not complement variants
-# in the last case, the codon will be reversed, the variant will be set in
-# and the codon will be reversed again
-
-
-def varcodinfo_to_codon(Codon, Codon_position, Variant, Gene):
-    codon = Codon
-    codpos = Codon_position
-    variant = Variant
-    gene = Gene
-    if cg.is_gene_complement(gene) == False:
-        if len(variant) == 1 and len(variant[0]) == 1:
-            codon = list(codon)
-            codon[codpos - 1] = str(variant[0])
-            codon = "".join(codon)
-            return codon
-        else:
-            return variant  # TODO: write function to return
-    elif cg.is_gene_complement(gene) == True:
-        if len(variant) == 1 and len(variant[0]) == 1:
-            codon = codon.reverse_complement()
-            codon = list(codon)
-            codon[codpos - 1] = str(variant[0])
-            codon = "".join(codon)
-            codon = Seq(codon)
-            return codon.reverse_complement()
-        else:
-            return variant
+def varcodinfo_to_codon(codon, codon_position, variant, gene):
+    if is_gene_complement(gene):
+        codon = codon.reverse_complement()
+    codon = list(codon)
+    codon[codon_position - 1] = str(variant[0]) if len(variant) == 1 and len(variant[0]) == 1 else variant
+    if all(isinstance(x, str) for x in codon):
+        codon = "".join(codon)
+        return codon if not is_gene_complement(gene) else Seq(codon).reverse_complement()
     else:
-        raise ValueError("gene could not be found")
+        return codon
+
+# Translates a base codon to an amino acid.
+
+def codon_to_as(Codon):
+    codon = Seq(str(Codon))
+    try:
+        return codon.translate()
+    except:
+        return ""
+
+# Checks if a gene is complement or not.
+
+def is_gene_complement(gene):
+    return "c" in gene_pos.loc[gene].values[0]
