@@ -4,5 +4,7 @@ channels:
 dependencies:
   - fastp=0.20.1
   - minimap2=2.22
+  - libdeflate=1.18
+  - htslib=1.19.1
   - samtools=1.19
   - pandas

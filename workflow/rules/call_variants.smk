@@ -14,7 +14,6 @@ rule call_region_variant:
         "../envs/freebayes.yaml"
     log:
         "logs/freebayes/{sample}_{loci}.log",
-    threads: 32
     shell:
         "freebayes -f {input.fna} --region {params.region} {input.bam} |"
         " vcffilter -f {params.filter} | vcfallelicprimitives -kg > {output}"
