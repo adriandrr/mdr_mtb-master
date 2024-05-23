@@ -25,3 +25,4 @@ salmonella
 staphylococcus_aureus
 rmresult.sh
 lint.sh
+workflow/scripts/__pycache__/

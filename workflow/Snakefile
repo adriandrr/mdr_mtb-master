@@ -10,26 +10,22 @@ pepfile: config["pepfile"]
 report: "report/workflow.rst"
 
 include: "rules/common.smk"
-include: "rules/qc.smk"
-include: "rules/trimm.smk"
-include: "rules/map_reads.smk"
-include: "rules/reduce_reads.smk"
+
+if config["sequencing"] == "ont":
+    include: "rules/ont/qc.smk"
+    include: "rules/ont/map_reads.smk"
+
+if config["sequencing"] == "illumina":
+    include: "rules/illumina/qc.smk"
+    include: "rules/illumina/map_reads.smk"
+
+include: "rules/get_ref.smk"
 include: "rules/call_variants.smk"
 include: "rules/create_antibiogram.smk"
 include: "rules/create_depth_profile.smk"
 include: "rules/create_html.smk"
 include: "rules/create_report.smk"
 
-if config["reduced-analysis"] == False:
-    rule all:
-        input:
-            "results/report.html"
-
-if config["reduced-analysis"] == True:
-    rule all:
-        input:
-            expand(
-                "results/{reduce}/ABres/{sample}/DepthProfile_{sample}.csv",
-                reduce = get_read_reduction(),
-                sample = get_samples()
-            )
+rule all:
+    input:
+        "results/report.html"
