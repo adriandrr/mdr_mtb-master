@@ -1,8 +1,6 @@
-import sys
 import vcf
 import codpos_genidx as cg
 import retrieve_codon as rc
-import retrieve_aac as ra
 
 # The Script is meant to be called from the snakemake-rule "create_variant_profile"
 # Input are vcf files which are created for every sample
@@ -33,9 +31,9 @@ with open(str(snakemake.output), "w") as outcsv, open(
             res = ""
             cod = cg.genomeidx_to_gene(recs.POS)
             retcod = rc.refcodinfo_to_codon(recs.POS, cod[0][2], cod[1])
-            retaac = ra.codon_to_as(retcod)
+            retaac = rc.codon_to_as(retcod)
             varcod = rc.varcodinfo_to_codon(retcod, cod[0][2], recs.ALT, cod[1])
-            varaac = ra.codon_to_as(varcod)
+            varaac = rc.codon_to_as(varcod)
             line.extend(
                 [
                     cod[1],

@@ -40,7 +40,7 @@ rule sum_resistances:
             sample = get_samples()
         )
     output:
-        "results/summed_resistances.csv"
+        "results/resistances_causing_mutations.csv"
     conda:
         "../envs/pandas.yaml"
     log:

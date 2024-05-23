@@ -22,12 +22,12 @@ rule plot_to_report:
     script:
         "../scripts/altair_plot_single.py"
 
-rule summed_resistances_to_report:
+rule resistances_causing_mutations_to_report:
     input:
-        expand("results/summed_resistances.csv",
+        expand("results/resistances_causing_mutations.csv",
         )
     output:
-        report("results/html/summed_resistances.html",
+        report("results/html/resistances_causing_mutations.html",
         caption="../report/resistance.rst",
         category="summed plot"
         )
